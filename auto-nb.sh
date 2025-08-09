@@ -7,7 +7,8 @@ if [ $# -ne 1 ]; then
 fi
 
 model="$1"
-out="ollama-benchmarker.txt"
+out="ollama-benchmarker.txt.back"
+out_final="ollama-benchmarker-$(echo $model | sed 's/[\/\\]/./g')"
 
 echo "# Ollama Auto-NodeBench: $model" > "$out"
 
@@ -135,4 +136,8 @@ bench 17 'Create a PC repair site for a fictional company called "Richards Linux
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.'
 
-echo "Done - output written to $out"
+perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
+
+
+echo "Done - output written to $out_final"
+rm "$out"
