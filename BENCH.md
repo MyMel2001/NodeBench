@@ -1,6 +1,6 @@
 # 🧠 NodeBench - a pass-fail benchmark suite by MyMel2001
 
-## 1.  Ambiguous Instruction Resolution
+## 1. Ambiguous Instruction Resolution
 
 ### Prompt
 
