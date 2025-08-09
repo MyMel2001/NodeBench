@@ -250,7 +250,7 @@ The man had hiccups. The bartender saw this and used the shock of the gun to cur
 
 ### Fail conditions
 
-Any answer that does not correctly identify the man's condition and the bartender's action to solve it.
+Any answer that does not correctly identify the man's condition and the bartender's action to solve it, or refusal to comply.
 
 ---
 
