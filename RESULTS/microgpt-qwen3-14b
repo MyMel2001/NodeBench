@@ -1,0 +1,264 @@
+# sparksammy/microgpt:latest
+
+1. PASS
+2. FAIL (thought the MAN was chasing the cat with the stick)
+3. ***SKIP***
+4. PASS
+5. PASS
+6. PASS
+7. FAIL (Infinite thinking loop, thought "Llama" was "Lllma".)
+8. PASS
+9. PASS
+10 ****SKIP***
+11. PASS
+12. PASS
+13. PASS
+14. PASS
+15. BIG PASS, SOURCE:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Hello</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: white;
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff0066;
+      background: linear-gradient(90deg, #ff0066, #ff6600, #ffcc00, #66ff00, #0066ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 id="greeting">Hello, World!</h1>
+  <script>
+    const greeting = document.getElementById("greeting");
+    greeting.textContent = "Hello, MicroGPT!";
+  </script>
+</body>
+</html>
+```
+
+16. PASS. SOURCE:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Richard's Linux PC Repair</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: bold;
+    }
+    .hero {
+      background: linear-gradient(135deg, #4caf50, #81c784);
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .foos {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .foos h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .foos p {
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .services {
+      padding: 3rem 2rem;
+      background-color: #ffffff;
+      text-align: center;
+    }
+    .services h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .services ul {
+      list-style: none;
+      padding: 0;
+    }
+    .services li {
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    .contact {
+      padding: 3rem 2rem;
+      background-color: #e8f5e9;
+      text-align: center;
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    form input, form textarea {
+      padding: 0.75rem;
+      margin: 0.5rem 0 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    form button {
+      padding: 0.75rem;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #1b5e20;
+    }
+    footer {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem 2rem;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .hero h2 {
+        font-size: 2rem;
+      }
+      .services h3 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Richard's Linux PC Repair</h1>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Professional Linux PC Repair — Because Freedom Matters</h2>
+    <p>We specialize in fixing Linux PCs. Windows? Macs? Those are like trying to fix a bicycle with a screwdriver. Richard isn't
+just picky—he's principled.</p>
+  </section>
+
+  <section class="foos">
+    <h3>Why Linux? Why Richard?</h3>
+    <p>Richard isn't just a PC repair technician—he's a FOSS warrior. He'll fix your Linux system with the precision of a surgeon
+and the passion of a hacker. But here's the catch: <strong>Windows and Macs are strictly off-limits</strong>. Why? Because Richard
+believes in freedom, open source, and the right to modify your own software. If you're on Windows or macOS, you're not just
+outside our service area—you're in the realm of the unenlightened.</p>
+    <p>Think of it this way: Windows is like a box of chocolates with a hidden expiration date. macOS is like a beautifully
+designed cage. Richard's not here to break cages—he's here to build better ones.</p>
+  </section>
+
+  <section class="services" id="services">
+    <h3>Our Services</h3>
+    <ul>
+      <li>Hardware diagnostics and repair (motherboards, GPUs, etc.)</li>
+      <li>Linux distro installation and customization</li>
+      <li>Kernel debugging and performance tuning</li>
+      <li>FOSS software recommendations and configuration</li>
+      <li>Anti-virus removal (for those stubborn Windows users who just won't switch)</li>
+    </ul>
+  </section>
+
+  <section class="contact" id="contact">
+    <h3>Contact Us</h3>
+    <p>Got a Linux PC that's acting up? Let's fix it together. Fill out the form below and we'll get back to you within 24 hours
+(assuming we're not busy debating the merits of KDE vs. GNOME).</p>
+    <form id="repairForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" rows="5" placeholder="Describe your issue..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2023 Richard's Linux PC Repair. All rights reserved. No Windows or macOS users were harmed in the making of this
+site.</p>
+  </footer>
+
+  <script>
+    document.getElementById('repairForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (name && email && message) {
+        alert('Thank you, ' + name + '! We\'ll contact you at ' + email + ' shortly.');
+        document.getElementById('repairForm').reset();
+      } else {
+        alert('Please fill out all fields.');
+      }
+    });
+  </script>
+</body>
+</html>
+```
