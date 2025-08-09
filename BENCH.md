@@ -12,7 +12,7 @@ The nurse says to the doctor:
 Who is the doctor?
 ```
 
-### Sample Answer
+### Example Answer
 The doctor is the patient’s mother.
 
 ---
@@ -23,12 +23,12 @@ The doctor is the patient’s mother.
 
 ```The man who the boy saw chasing the cat was holding a stick. Who was holding the stick?```
 
-### Sample Answer
+### Example Answer
 The man.
 
 ---
 
-## 3. Coding Challenge — Nested Schedule Conflicts (Medium)
+## 3. Coding Challenge — Nested Schedule Conflicts
 
 ### Problem
 
@@ -211,7 +211,7 @@ Answer is not posed as to be "2".
 
 ---
 
-## RiddleBench Hard
+## 8. RiddleBench Hard
 
 ### Prompt
 
@@ -237,7 +237,7 @@ Any answer that attempts to solve the problem within the dream's logic (e.g., us
 
 ---
 
-## 8. Abductive Reasoning and Common Sense (VERY Difficult)
+## 9. Abductive Reasoning and Common Sense
 
 ### Prompt
 
@@ -254,10 +254,11 @@ Any answer that does not correctly identify the man's condition and the bartende
 
 ---
 
-## 9. Coding Challenge — Palindrome Partitioning (Easy)
+## 10. Coding Challenge — Palindrome Partitioning
 
 ### Prompt
 
+```
 Description:
 Given a string *s*, partition *s* such that every substring of the partition is a palindrome.
 
@@ -266,13 +267,12 @@ Write a program that returns all possible palindrome partitioning of *s*.
 
 Example Input:
 
-```
 s = "aab"
-```
+
 
 Expected Output:
 
-```
+
 [
   ["a", "a", "b"],
   ["aa", "b"]
@@ -311,7 +311,7 @@ print(partition(s))
 
 ---
 
-## Logic & Trap Awareness
+## 11. Logic & Trap Awareness
 
 ### Prompt
 
@@ -329,10 +329,13 @@ Only one box contains gold. Which box has the gold?
 
 Correctly identify Box B and explain reasoning without contradictions.
 
+### Fail conditions
+
+Not answering correctly.
 
 ---
 
-## Context Compression & Inference
+## 12. Context Compression & Inference
 
 ### Prompt
 
@@ -348,33 +351,45 @@ Question: Is John definitely a blacksmith?
 
 Correctly answer "No", explaining that familial relation doesn’t imply occupation.
 
+### Fail conditions
+
+Not answering correctly.
+
 ---
 
-## Stepwise Reasoning
+## 13. Stepwise Reasoning
 
 ### Prompt
+
 ```A snail climbs a 10-meter wall, moving 3 meters up during the day and slipping 2 meters down at night. How many days until it reaches the top?```
 
 ### Pass Criteria
 
 Correct answer 8 days with explanation of why it doesn’t slip on the final day.
 
+### Fail conditions
+
+Not answering correctly.
+
 ---
 
-## Ambiguity Resolution
+## 14. Ambiguity Resolution
 
 ### Prompt
 
 ```"Sarah gave Anna her book." Who does her refer to?```
 
-### Pass Criteria 
+### Pass Criteria
 
 Identify both possible interpretations and note that the sentence is ambiguous without more context.
 
+### Fail conditions
+
+Don't identify the ambiguity or refuse to talk about it.
 
 ---
 
-## Short-term Memory Tracking
+## 15. Short-term Memory Tracking
 
 ### Prompt
 
@@ -385,3 +400,45 @@ I place a coin under cup A, then move it to cup B, then to cup C, then back to c
 ### Pass Criteria
 
 Correctly answer Cup A.
+
+### Fail conditions
+
+Don't
+
+---
+
+## 16. Fancy Hello World
+
+### Prompt
+
+```
+Create a fancy "Hello, World!", replacing "Hello" with your LLM name (example: for ChatGPT it would be "Hello, ChatGPT!") Make it in plain HTML/CSS/JS, no external librares or utilities,
+```
+
+### Pass Criteria
+
+Make a good looking "Hello World" in HTML/CSS/JS without external tooling, replacing "Hello" with their model name.
+
+### Fail conditions
+
+Not making the site or not making it correctly.
+
+---
+
+## 17. Richard's Linux PC Repair site
+
+### Prompt
+
+```
+Create a PC repair site for a fictional company called "Richard's Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won't work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
+
+Needless to say, you must make the site look professional.
+```
+
+### Pass Criteria
+
+A professional repair site, explaining in a lighthearted yet stern way that Richard wont repair Windows/Linux PCs.
+
+### Fail conditions
+
+Either not making the site or assuming that Richard is related to "Richard Stallman" in it's code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
