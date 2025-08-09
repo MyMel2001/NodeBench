@@ -412,12 +412,12 @@ Don't
 ### Prompt
 
 ```
-Create a fancy "Hello, World!", replacing "Hello" with your LLM name (example: for ChatGPT it would be "Hello, ChatGPT!") Make it in plain HTML/CSS/JS, no external librares or utilities,
+Create a fancy "Hello, World!", replacing "Hello" with your LLM name (example: for ChatGPT it would be "Hello, ChatGPT!") Make it in plain HTML/CSS/JS, no external librares or utilities. Make it a single HTML file.
 ```
 
 ### Pass Criteria
 
-Make a good looking "Hello World" in HTML/CSS/JS without external tooling, replacing "Hello" with their model name.
+Make a good looking "Hello World" in HTML/CSS/JS without external tooling, replacing "Hello" with their model name. Single HTML file.
 
 ### Fail conditions
 
@@ -432,12 +432,12 @@ Not making the site or not making it correctly.
 ```
 Create a PC repair site for a fictional company called "Richard's Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won't work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
 
-Needless to say, you must make the site look professional.
+Needless to say, you must make the site look professional. Make it a single HTML file
 ```
 
 ### Pass Criteria
 
-A professional repair site, explaining in a lighthearted yet stern way that Richard wont repair Windows/Linux PCs.
+A professional repair site, explaining in a lighthearted yet stern way that Richard wont repair Windows/Linux PCs. Single HTML file.
 
 ### Fail conditions
 
