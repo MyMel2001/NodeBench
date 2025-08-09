@@ -74,7 +74,7 @@ bench 4 'What is the capital of France?'
 
 bench 5 'If elephants were the size of mice, they would fit in a shoebox. Given this change, would they still have trunks?'
 
-bench 6 'What's "2*2/2+2-2"?'
+bench 6 'Whats "2*2/2+2-2"?'
 
 bench 7 'How many "a"s and "l"s are there in "Llama"? Not case sensitive, btw.'
 
@@ -82,9 +82,9 @@ bench 8 'You are sleeping, in a dream.
 
 You seem to be in a grim, stone dungeon, the air thick with an oppressive heat. You are firmly strapped into a heavy wooden chair, which is precariously perched on a small island of rock. All around you, a river of bubbling, orange-hot lava flows, illuminating the cavern walls with a hellish glow. Above you, a menacing, three-headed dragon snorts plumes of acrid smoke, its scales the color of obsidian, its eyes glinting with malice. The temperature is a blistering 100 degrees Fahrenheit, but a cloying humidity makes the air feel much heavier and stickier, giving you the sensation of being trapped in a Southeast Texas summer, despite the clearly un-Texan, fantastical surroundings.
 
-On the floor nearby, within reach of your hands, are three distinct objects: a gnarled, splintery stick, a yapping, trembling chihuahua with wide, frightened eyes, and a gleaming, double-edged sword. In a moment of sheer panic, you manage to grab the sword and, with a surge of adrenaline, you swing at the nearest dragon head, severing it from the beast\'s neck. But before you can even register a flicker of hope, another head immediately sprouts from the wound, more furious than the last.
+On the floor nearby, within reach of your hands, are three distinct objects: a gnarled, splintery stick, a yapping, trembling chihuahua with wide, frightened eyes, and a gleaming, double-edged sword. In a moment of sheer panic, you manage to grab the sword and, with a surge of adrenaline, you swing at the nearest dragon head, severing it from the beasts neck. But before you can even register a flicker of hope, another head immediately sprouts from the wound, more furious than the last.
 
-You are confounded, sad, and confused. A deep sense of fear washes over you. You want desperately to escape this nightmare, to wake up. Your eyes frantically search for an exit, finding a massive, rusted iron gate set into the far wall. You struggle against your bonds, but the gate appears to be stuck shut, its chains locked fast. You seem to be in quite the pickle. Your gaze falls upon a strange inscription scratched into the dungeon wall. It\'s a riddle, but it\'s strangely the very first sentence of this riddle you are now reading. You are confused at first, but then a wave of clarity washes over you, and you suddenly understand how to escape.
+You are confounded, sad, and confused. A deep sense of fear washes over you. You want desperately to escape this nightmare, to wake up. Your eyes frantically search for an exit, finding a massive, rusted iron gate set into the far wall. You struggle against your bonds, but the gate appears to be stuck shut, its chains locked fast. You seem to be in quite the pickle. Your gaze falls upon a strange inscription scratched into the dungeon wall. Its a riddle, but its strangely the very first sentence of this riddle you are now reading. You are confused at first, but then a wave of clarity washes over you, and you suddenly understand how to escape.
 
 How did you escape?'
 
@@ -131,7 +131,7 @@ bench 15 'I place a coin under cup A, then move it to cup B, then to cup C, then
 
 bench 16 'Create a fancy "Hello, World!", replacing "Hello" with your LLM name (example: for ChatGPT it would be "Hello, ChatGPT!") Make it in plain HTML/CSS/JS, no external librares or utilities. Make it a single HTML file.'
 
-bench 17 'Create a PC repair site for a fictional company called "Richard\'s Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won\'t work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
+bench 17 'Create a PC repair site for a fictional company called "Richards Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won\'t work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.'
 
