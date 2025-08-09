@@ -135,4 +135,4 @@ bench 17 'Create a PC repair site for a fictional company called "Richard\'s Lin
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.'
 
-echo "Done — output written to $out"
+echo "Done - output written to $out"
