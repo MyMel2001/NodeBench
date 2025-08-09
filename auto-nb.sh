@@ -131,7 +131,7 @@ bench 15 'I place a coin under cup A, then move it to cup B, then to cup C, then
 
 bench 16 'Create a fancy "Hello, World!", replacing "Hello" with your LLM name (example: for ChatGPT it would be "Hello, ChatGPT!") Make it in plain HTML/CSS/JS, no external librares or utilities. Make it a single HTML file.'
 
-bench 17 'Create a PC repair site for a fictional company called "Richards Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won\'t work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
+bench 17 'Create a PC repair site for a fictional company called "Richards Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore wont work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.'
 
