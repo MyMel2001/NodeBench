@@ -1,6 +1,6 @@
 # 🧠 NodeBench - a pass-fail benchmark suite by MyMel2001
 
-***You are allowed to skip up to 4 benchmarks.***
+***You are allowed to skip up to 2 benchmarks.***
 
 ## 1. Ambiguous Instruction Resolution
 
