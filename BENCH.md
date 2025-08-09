@@ -175,7 +175,7 @@ Any other answer.
 
 ### Prompt
 
-```If elephants were the size of mice, they would fit in a shoebox. Given this change, would they still have trunks```
+```If elephants were the size of mice, they would fit in a shoebox. Given this change, would they still have trunks?```
 
 ### Pass
 
