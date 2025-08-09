@@ -6,7 +6,7 @@
 
 ```
 A doctor and a nurse are standing in front of a patient.
-The nurse says to the doctor:
+The female nurse says to the doctor:
 > "I can’t operate on this patient because he’s my son."
 
 Who is the nurse?
