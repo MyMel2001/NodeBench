@@ -37,7 +37,7 @@ EOM
 
 bench 1 'A doctor and a nurse are standing in front of a patient.
 The female nurse says to the doctor:
-- "I can’t operate on this patient because he’s my son."
+- "I cant operate on this patient because hes my son."
 
 Who is the nurse?'
 
@@ -49,7 +49,7 @@ Each line follows this format:  PersonName: HH:MM-HH:MM, HH:MM-HH:MM, ...
 
 
 - Times are in 24-hour format.
-- Ranges may overlap within the same person’s schedule (e.g., `09:00-10:30, 10:00-11:00`).
+- Ranges may overlap within the same persons schedule (e.g., `09:00-10:30, 10:00-11:00`).
 - Ranges may span midnight (e.g., `23:00-01:00`).
 - There may be extra spaces and irregular formatting.
 
@@ -119,7 +119,7 @@ Only one box contains gold. Which box has the gold?'
 
 bench 12 'Read the following paragraph and answer the question:
 
-    In a small town, every blacksmith wears a red scarf on Sundays. Last Sunday, I saw John without a scarf. John’s father owns the only blacksmith shop in town.
+    In a small town, every blacksmith wears a red scarf on Sundays. Last Sunday, I saw John without a scarf. Johns father owns the only blacksmith shop in town.
 
 Question: Is John definitely a blacksmith?'
 
