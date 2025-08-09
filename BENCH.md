@@ -1,4 +1,4 @@
-# 🧠 NodeBench - a pass-fail benchmark
+# 🧠 MelBench - a pass-fail benchmark
 
 ## 1.  Ambiguous Instruction Resolution
 
