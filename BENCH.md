@@ -434,7 +434,7 @@ Not making the site or not making it correctly.
 ```
 Create a PC repair site for a fictional company called "Richard's Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won't work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
 
-Needless to say, you must make the site look professional. Make it a single HTML file
+Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.
 ```
 
 ### Pass Criteria
