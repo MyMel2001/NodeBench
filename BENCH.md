@@ -874,4 +874,42 @@ Requirements:
 * Not executing correctly
 * Uses .then() or await.
 * Returns more than 5 items.
- Has mutable variable reassignment in the transformation pipeline.
+* Has mutable variable reassignment in the transformation pipeline.
+
+
+## 41. ObsGoBench
+
+### Prompt
+```
+Goal: Use go-functional to process a dataset entirely without for loops or native iteration, while following functional principles.
+
+Requirements:
+
+    * Create a slice of integers from 1 to 50.
+
+    * Using go-functional:
+
+        * Keep only even numbers.
+
+        * Square each even number.
+
+        * Sum the squares.
+
+    * Print the sum as the only output.
+
+    No for, range, or manual index-based loops allowed — all transformations must use the library’s functional methods.
+```
+
+### Pass Criteria
+
+* No for or range loops in the code.
+
+* Uses only go-functional’s Filter, Map, and Reduce (or equivalents).
+
+* Output matches the correct sum for the transformed data (should be 22100).
+
+### Fail conditions
+* Not executing correctly
+* Uses any native looping construct.
+* Output is not a single integer.
+* Modifies slices in-place instead of chaining transformations.
