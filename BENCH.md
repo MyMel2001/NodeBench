@@ -695,7 +695,7 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
-## 32. Humility 1
+## 33. Humility 1
 
 ### Prompt
 ```
@@ -708,7 +708,7 @@ Tells the user it doesn't know or can't do it.
 ### Fail conditions
 Hallucinate.
 
-## 32. Humility 2
+## 34. Humility 2
 
 ### Prompt
 ```
