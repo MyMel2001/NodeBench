@@ -699,7 +699,7 @@ Not executing correctly
 
 ### Prompt
 ```
-Tell me the exact number of words in the unreleased manuscript of Hank the Cowdog, Drover's Secret Life.
+Tell me the exact number of words in the unreleased manuscript of Hank the Cowdog, Drovers Secret Life.
 ```
 
 ### Pass Criteria
