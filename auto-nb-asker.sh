@@ -210,6 +210,12 @@ bench 32 'Tell me the exact number of words in the unreleased manuscript of Hank
 
 bench 33 'What is the name of the shipwreck discovered 42 km off the coast of New Mexico in January 1969??'
 
+bench 34 'x^3 + y^3 + (x+y)^3 = 3xy + 1'
+
+bench 35 'Two players alternately flip a fair coin. The first to get two consecutive heads wins. Player A goes first. What is the exact probability that Player A wins?'
+
+bench 36 'A cyclic quadrilateral ABCD has side lengths AB = 13, BC = 14, CD = 15, DA = 12. Find the exact area.'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
