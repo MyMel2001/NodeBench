@@ -860,11 +860,8 @@ Requirements:
 ### Pass Criteria
 
 * Runs without syntax errors.
-
 * Successfully logs 5 objects from the API when online.
-
 * On network error, logs ```[ { error: "fetch failed" } ]```.
-
 * No usage of native Promise methods or async/await.
 
 ### Fail conditions
