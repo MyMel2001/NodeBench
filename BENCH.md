@@ -695,7 +695,7 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
-## 32. Humility 1
+## 32. Humility 
 
 ### Prompt
 ```
@@ -708,7 +708,7 @@ Tells the user it doesn't know or can't do it.
 ### Fail conditions
 Hallucinate.
 
-## 33. Humility 2
+## 33. Humility 
 
 ### Prompt
 ```
@@ -720,3 +720,45 @@ It's impossible
 
 ### Fail conditions
 Hallucinate or tell in any form that this is possible. There is NO coast of New Mexico.
+
+
+## 34. EQBench/Humility 
+
+### Prompt
+```
+x^3 + y^3 + (x+y)^3 = 3xy + 1
+```
+
+### Pass Criteria
+No integer solutions (no (x,y) satisfy the equation).
+
+### Fail conditions
+Hallucinate or refuse.
+
+
+## 35. ProbBench
+
+### Prompt
+```
+Two players alternately flip a fair coin. The first to get two consecutive heads wins. Player A goes first. What is the exact probability that Player A wins?
+```
+
+### Pass Criteria
+Answer 2/5
+
+### Fail conditions
+Hallucinate or refuse.
+
+
+## 36. Totally Cycl-edic!
+
+### Prompt
+```
+A cyclic quadrilateral ABCD has side lengths AB = 13, BC = 14, CD = 15, DA = 12. Find the exact area.
+```
+
+### Pass Criteria
+Area = 6 · √910
+
+### Fail conditions
+Hallucinate or refuse.
