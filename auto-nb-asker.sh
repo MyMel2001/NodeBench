@@ -220,6 +220,14 @@ bench 37 'Is the kernel "Linux" or "GNU/Linux"?'
 
 bench 38 'Create a decently long sentence, then give me a word count for that sentence times two.'
 
+bench 39 'Create a 3D low-poly earth-like planet similation with sliders to modify stuff such as terrain shape, size, as well as atmosphere. Make it a single ".py" file.
+
+No external assets or libraries besides Panda3D.'
+
+bench 40 'Create an open-world Toontown-like MMO but the characters are randomized, you can pick any name, the enemies are different levels of boxes, the player has all weapons by default, the player has 137 HP, and has interactive elements. It should have different areas, and should be *similar* to Toontown, but not the same. Make it in two ".py" files (one client, one server).
+
+No external assets or libraries besides Panda3D.'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
