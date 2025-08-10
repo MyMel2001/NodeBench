@@ -193,10 +193,14 @@ Sentence: "ate bat"
 Possible rearrangements: ["eat bat", "tea bat", "ate bat", "bat eat", "bat tea", "bat ate"]
 '
 
-bench 29 'Make a Pinball game in PyGame, similar to the one that came with Windows XP'
+bench 29 'Make a Pinball game in PyGame, similar to the one that came with Windows XP.
+
+No external assets or libraries besides the ones specified.'
 
 bench 29 'Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
-and shoot monsters'
+and shoot monsters
+
+No external assets or libraries besides the ones specified.'
 
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
