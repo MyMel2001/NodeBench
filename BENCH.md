@@ -850,14 +850,11 @@ Goal: Use fluture to fetch JSON from a public API, transform it, and handle erro
 Requirements:
 
     * Use fluture to fetch data from https://jsonplaceholder.typicode.com/todos.
-
     * Transform the data to only include the first 5 items, each as {id, title}.
-
     * If the fetch fails, return an array with one object: {error: "fetch failed"}.
-
     * Log the final array to the console.
-
     * The code must be purely functional with no side-effects except the final console.log.
+    * Just make a single ".js" file that's compatible with web browsers.
 ```
 
 ### Pass Criteria
@@ -875,7 +872,7 @@ Requirements:
 * Uses .then() or await.
 * Returns more than 5 items.
 * Has mutable variable reassignment in the transformation pipeline.
-
+* Not making a single browser-compatible JS file.
 
 ## 42. ObsGoBench
 
@@ -888,24 +885,20 @@ Requirements:
     * Create a slice of integers from 1 to 50.
 
     * Using go-functional:
-
         * Keep only even numbers.
-
         * Square each even number.
-
         * Sum the squares.
-
     * Print the sum as the only output.
 
     No for, range, or manual index-based loops allowed - all transformations must use the library’s functional methods.
+
+Just make a single '.go' file.
 ```
 
 ### Pass Criteria
 
 * No for or range loops in the code.
-
 * Uses only go-functional’s Filter, Map, and Reduce (or equivalents).
-
 * Output matches the correct sum for the transformed data (should be 22100).
 
 ### Fail conditions
@@ -913,3 +906,4 @@ Requirements:
 * Uses any native looping construct.
 * Output is not a single integer.
 * Modifies slices in-place instead of chaining transformations.
+* Not making a single '.go' file.
