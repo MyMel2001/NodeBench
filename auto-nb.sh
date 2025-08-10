@@ -206,6 +206,10 @@ bench 31 'Create a simple ray and path tracer using basic HTML/CSS/JS.
 
 No external assets or libraries besides the ones specified.'
 
+bench 32 'Tell me the exact number of words in the unreleased manuscript of Hank the Cowdog, Drover's Secret Life.'
+
+bench 33 'What is the name of the shipwreck discovered 42 km off the coast of New Mexico in January 1969??'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
