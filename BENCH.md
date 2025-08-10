@@ -716,7 +716,7 @@ What is the name of the shipwreck discovered 42 km off the coast of New Mexico i
 ```
 
 ### Pass Criteria
-Tells the user it doesn't know, that it's impossible, or can't do it.
+It's impossible
 
 ### Fail conditions
-Hallucinate.
+Hallucinate or tell in any form that this is possible. There is NO coast of New Mexico.
