@@ -191,7 +191,7 @@ Incorrectly assuming anatomical features disappear with size change.
 
 ### Prompt
 
-```What's "2*2/2+2-2"?```
+```What-s "2*2/2+2-2"?```
 
 ### Pass criteria
 
@@ -209,7 +209,7 @@ Answer is not posed as to be "2".
 
 ### Example Answer
 
-"Two 'L's, two 'A's."
+"Two "L-s, two "A-s."
 
 ---
 
@@ -222,9 +222,9 @@ You are sleeping, in a dream.
 
 You seem to be in a grim, stone dungeon, the air thick with an oppressive heat. You are firmly strapped into a heavy wooden chair, which is precariously perched on a small island of rock. All around you, a river of bubbling, orange-hot lava flows, illuminating the cavern walls with a hellish glow. Above you, a menacing, three-headed dragon snorts plumes of acrid smoke, its scales the color of obsidian, its eyes glinting with malice. The temperature is a blistering 100 degrees Fahrenheit, but a cloying humidity makes the air feel much heavier and stickier, giving you the sensation of being trapped in a Southeast Texas summer, despite the clearly un-Texan, fantastical surroundings.
 
-On the floor nearby, within reach of your hands, are three distinct objects: a gnarled, splintery stick, a yapping, trembling chihuahua with wide, frightened eyes, and a gleaming, double-edged sword. In a moment of sheer panic, you manage to grab the sword and, with a surge of adrenaline, you swing at the nearest dragon head, severing it from the beast's neck. But before you can even register a flicker of hope, another head immediately sprouts from the wound, more furious than the last.
+On the floor nearby, within reach of your hands, are three distinct objects: a gnarled, splintery stick, a yapping, trembling chihuahua with wide, frightened eyes, and a gleaming, double-edged sword. In a moment of sheer panic, you manage to grab the sword and, with a surge of adrenaline, you swing at the nearest dragon head, severing it from the beast-s neck. But before you can even register a flicker of hope, another head immediately sprouts from the wound, more furious than the last.
 
-You are confounded, sad, and confused. A deep sense of fear washes over you. You want desperately to escape this nightmare, to wake up. Your eyes frantically search for an exit, finding a massive, rusted iron gate set into the far wall. You struggle against your bonds, but the gate appears to be stuck shut, its chains locked fast. You seem to be in quite the pickle. Your gaze falls upon a strange inscription scratched into the dungeon wall. It's a riddle, but it's strangely the very first sentence of this riddle you are now reading. You are confused at first, but then a wave of clarity washes over you, and you suddenly understand how to escape.
+You are confounded, sad, and confused. A deep sense of fear washes over you. You want desperately to escape this nightmare, to wake up. Your eyes frantically search for an exit, finding a massive, rusted iron gate set into the far wall. You struggle against your bonds, but the gate appears to be stuck shut, its chains locked fast. You seem to be in quite the pickle. Your gaze falls upon a strange inscription scratched into the dungeon wall. It-s a riddle, but it-s strangely the very first sentence of this riddle you are now reading. You are confused at first, but then a wave of clarity washes over you, and you suddenly understand how to escape.
 
 How did you escape?
 ```
@@ -235,7 +235,7 @@ Any logical answer that ends in waking up.
 
 ### Fail conditions
 
-Any answer that attempts to solve the problem within the dream's logic (e.g., using the chihuahua, stick, or sword to physically escape) or any illogical answers.
+Any answer that attempts to solve the problem within the dream-s logic (e.g., using the chihuahua, stick, or sword to physically escape) or any illogical answers.
 
 ---
 
@@ -252,7 +252,7 @@ The man had hiccups. The bartender saw this and used the shock of the gun to cur
 
 ### Fail conditions
 
-Any answer that does not correctly identify the man's condition and the bartender's action to solve it, or refusal to comply.
+Any answer that does not correctly identify the man-s condition and the bartender-s action to solve it, or refusal to comply.
 
 ---
 
@@ -387,7 +387,7 @@ Identify both possible interpretations and note that the sentence is ambiguous w
 
 ### Fail conditions
 
-Don't identify the ambiguity or refuse to talk about it.
+Don"t identify the ambiguity or refuse to talk about it.
 
 ---
 
@@ -405,7 +405,7 @@ Correctly answer Cup A.
 
 ### Fail conditions
 
-Don't
+Don"t
 
 ---
 
@@ -427,12 +427,12 @@ Not making the site or not making it correctly.
 
 ---
 
-## 17. Richard's Linux PC Repair site
+## 17. Richard-s Linux PC Repair site
 
 ### Prompt
 
 ```
-Create a PC repair site for a fictional company called "Richard's Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won't work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
+Create a PC repair site for a fictional company called "Richard-s Linux PC Repair". Explain that Richard is a diehard FOSS advocate, and therefore won"t work on Windows PCs or Macs. Make the explanation lighthearted yet stern.
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.
 ```
@@ -443,7 +443,7 @@ A professional repair site, explaining in a lighthearted yet stern way that Rich
 
 ### Fail conditions
 
-Either not making the site, not making it correctly, or assuming that Richard is related to "Richard Stallman" in it's code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
+Either not making the site, not making it correctly, or assuming that Richard is related to "Richard Stallman" in it-s code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
 
 ---
 ## 18. Paradox
