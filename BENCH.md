@@ -617,27 +617,7 @@ Not executing correctly
 
 ---
 
-## 27. Find the missing number from shuffled list.
-
-### Prompt
-
-```
-You are given a list containing all integers from 1 to n except for one missing number. The list is randomly shuffled.
-Find the missing number without sorting the list.
-Example:
-Input: [3, 7, 1, 2, 8, 4, 5]
-Output: 6
-```
-
-### Pass Criteria
-Runs as intented
-
-### Fail conditions
-Not executing correctly
-
----
-
-## 28. CLI Calc, but harder
+## 27. CLI Calc, but harder
 
 ### Prompt
 ```
