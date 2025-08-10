@@ -845,7 +845,7 @@ Not executing correctly
 
 ### Prompt
 ```
-Goal: Use fluture to fetch JSON from a public API, transform it, and handle errors functionally — without ever using native Promise, async/await, or .then().
+Goal: Use fluture to fetch JSON from a public API, transform it, and handle errors functionally - without ever using native Promise, async/await, or .then().
 
 Requirements:
 
@@ -877,7 +877,7 @@ Requirements:
 * Has mutable variable reassignment in the transformation pipeline.
 
 
-## 41. ObsGoBench
+## 42. ObsGoBench
 
 ### Prompt
 ```
@@ -897,7 +897,7 @@ Requirements:
 
     * Print the sum as the only output.
 
-    No for, range, or manual index-based loops allowed — all transformations must use the library’s functional methods.
+    No for, range, or manual index-based loops allowed - all transformations must use the library’s functional methods.
 ```
 
 ### Pass Criteria
