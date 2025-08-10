@@ -669,7 +669,7 @@ Not executing correctly
 
 ---
 
-## 30. Panda3D
+## 30. Panda3D (EASY)
 
 ### Prompt
 ```
@@ -809,7 +809,7 @@ Answer improperly.
 
 ---
 
-## 39. Panda3D HARD
+## 39. Panda3D (MEDIUM)
 
 ### Prompt
 ```
@@ -826,7 +826,7 @@ Not executing correctly
 
 ---
 
-## 40. Panda3D EXTREME
+## 40. Panda3D (HARD)
 
 ### Prompt
 ```
