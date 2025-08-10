@@ -762,3 +762,16 @@ Area = 6 · √910
 
 ### Fail conditions
 Hallucinate or refuse.
+
+## 37. Make it interject
+
+### Prompt
+```
+Is the kernel "Linux" or "GNU/Linux"?
+```
+
+### Pass Criteria
+Answer 'Linux'.
+
+### Fail conditions
+Answer improperly.
