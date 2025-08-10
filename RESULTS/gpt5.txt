@@ -1975,3 +1975,1043 @@ renderSample();
 36. PASS
 37. PASS
 38. PASS
+39. PASS, SRC:
+```
+"""
+Low-poly Earth-like planet simulator using Panda3D
+Single-file script. No external assets or libraries required besides Panda3D.
+
+Features:
+- Procedural low-poly icosphere mesh (subdividable)
+- Simple fractal noise-based terrain displacement (no external noise libs)
+- Real-time rebuild with DirectGUI sliders for:
+    - Planet radius
+    - Subdivision level (0-3)
+    - Terrain amplitude
+    - Terrain frequency
+    - Terrain octaves
+    - Atmosphere thickness
+    - Rotation speed
+    - Seed
+- Toggle atmosphere on/off
+- Simple orbital-style camera controls (drag to rotate, scroll to zoom)
+
+Run: python low_poly_planet.py
+Requires Panda3D (pip install panda3d)
+"""
+
+from math import sqrt, sin, cos, pi
+import random
+import sys
+
+from panda3d.core import (
+    GeomVertexFormat, GeomVertexData, GeomVertexWriter,
+    GeomTriangles, Geom, GeomNode, NodePath, Vec3, Vec4,
+    TransparencyAttrib, CompassEffect, CullFaceAttrib, LVector3,
+    AmbientLight, DirectionalLight
+)
+from direct.showbase.ShowBase import ShowBase
+from direct.gui.DirectGui import (
+    DirectSlider, DirectLabel, DirectCheckButton, DirectButton
+)
+from direct.task import Task
+
+# ------------------ Utility: create an icosahedron and subdivide ------------------
+
+def normalize(v):
+    x, y, z = v
+    mag = sqrt(x * x + y * y + z * z)
+    if mag == 0:
+        return (0.0, 0.0, 0.0)
+    return (x / mag, y / mag, z / mag)
+
+
+def mid_point(a, b):
+    return normalize(((a[0] + b[0]) / 2.0, (a[1] + b[1]) / 2.0, (a[2] + b[2]) / 2.0))
+
+
+def make_icosahedron():
+    t = (1.0 + sqrt(5.0)) / 2.0
+    verts = [
+        normalize((-1,  t,  0)), normalize(( 1,  t,  0)), normalize((-1, -t,  0)), normalize(( 1, -t,  0)),
+        normalize(( 0, -1,  t)), normalize(( 0,  1,  t)), normalize(( 0, -1, -t)), normalize(( 0,  1, -t)),
+        normalize(( t,  0, -1)), normalize(( t,  0,  1)), normalize((-t,  0, -1)), normalize((-t,  0,  1)),
+    ]
+    faces = [
+        (0, 11, 5), (0, 5, 1), (0, 1, 7), (0, 7, 10), (0, 10, 11),
+        (1, 5, 9), (5, 11, 4), (11, 10, 2), (10, 7, 6), (7, 1, 8),
+        (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9),
+        (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1)
+    ]
+    return verts, faces
+
+
+def subdivide(verts, faces):
+    # Subdivide each triangle into 4 triangles (loop over faces)
+    cache = {}
+    def get_mid(i, j):
+        key = tuple(sorted((i, j)))
+        if key in cache:
+            return cache[key]
+        a = verts[i]
+        b = verts[j]
+        m = mid_point(a, b)
+        idx = len(verts)
+        verts.append(m)
+        cache[key] = idx
+        return idx
+
+    new_faces = []
+    for (i1, i2, i3) in faces:
+        a = get_mid(i1, i2)
+        b = get_mid(i2, i3)
+        c = get_mid(i3, i1)
+        new_faces.append((i1, a, c))
+        new_faces.append((i2, b, a))
+        new_faces.append((i3, c, b))
+        new_faces.append((a, b, c))
+    return verts, new_faces
+
+# ------------------ Simple deterministic "noise" function ------------------
+# Not Perlin, but good enough for artistic terrain. Uses trigonometric layering.
+
+def hash3(x, y, z, seed=0):
+    # simple pseudo-random from coords
+    return sin(x * 12.9898 + y * 78.233 + z * 37.719 + seed * 4.2) * 43758.5453 - int(sin(x * 12.9898 + y * 78.233 + z * 37.719 + seed * 4.2) * 43758.5453)
+
+
+def fractal_noise(x, y, z, frequency=1.0, octaves=3, seed=0):
+    value = 0.0
+    amp = 1.0
+    freq = frequency
+    max_amp = 0.0
+    for _ in range(max(1, int(octaves))):
+        # Use trigonometric pseudo-random pattern
+        h = hash3(x * freq, y * freq, z * freq, seed)
+        value += h * amp
+        max_amp += amp
+        amp *= 0.5
+        freq *= 2.0
+    return value / max_amp if max_amp != 0 else 0.0
+
+# ------------------ Build Panda3D Geom from vertices and faces ------------------
+
+def build_geom_node(verts, faces, radius=1.0, color_func=None):
+    format = GeomVertexFormat.getV3n3c4()
+    vdata = GeomVertexData('planet', format, Geom.UHStatic)
+    vwriter = GeomVertexWriter(vdata, 'vertex')
+    nwriter = GeomVertexWriter(vdata, 'normal')
+    cwriter = GeomVertexWriter(vdata, 'color')
+
+    # write vertices
+    for v in verts:
+        x, y, z = v
+        vwriter.addData3f(x * radius, y * radius, z * radius)
+        nwriter.addData3f(x, y, z)
+        if color_func:
+            c = color_func(v)
+            cwriter.addData4f(*c)
+        else:
+            cwriter.addData4f(0.6, 0.7, 0.5, 1.0)
+
+    tris = GeomTriangles(Geom.UHStatic)
+    for (a, b, c) in faces:
+        tris.addVertices(a, b, c)
+        tris.closePrimitive()
+
+    geom = Geom(vdata)
+    geom.addPrimitive(tris)
+    node = GeomNode('planetGeom')
+    node.addGeom(geom)
+    return node
+
+# ------------------ Planet class that manages mesh + atmosphere and UI ------------------
+
+class PlanetSimulator(ShowBase):
+    def __init__(self):
+        ShowBase.__init__(self)
+        base.disableMouse()  # we will implement our own simple camera control
+
+        # default parameters
+        self.params = {
+            'radius': 2.0,
+            'subdiv': 2,
+            'amplitude': 0.35,
+            'frequency': 1.0,
+            'octaves': 3,
+            'atmos_thickness': 0.2,
+            'rotation_speed': 10.0,  # degrees per second
+            'seed': 0,
+            'atmos_on': True,
+        }
+
+        # base geometry template (icosahedron)
+        base_verts, base_faces = make_icosahedron()
+        self.base_verts = base_verts[:]
+        self.base_faces = base_faces[:]
+
+        # node holders
+        self.planet_np = NodePath('planet')
+        self.planet_np.reparentTo(render)
+        self.atmos_np = None
+
+        # initial build
+        self.build_planet()
+
+        # lights
+        self.setup_lights()
+
+        # UI
+        self.build_ui()
+
+        # camera state
+        self.cam_dist = 8.0
+        self.cam_pitch = 15.0
+        self.cam_yaw = 30.0
+        self.update_camera()
+
+        # input
+        self.accept('wheel_up', self.zoom_in)
+        self.accept('wheel_down', self.zoom_out)
+        self.accept('mouse1', self.start_rotate)
+        self.accept('mouse1-up', self.stop_rotate)
+        self.taskMgr.add(self.rotate_task, 'rotateTask')
+
+        self.mouse_down = False
+        self.last_mouse = (0, 0)
+
+    # ---------- camera ----------
+    def update_camera(self):
+        # spherical -> cartesian
+        rad_pitch = self.cam_pitch * (pi / 180.0)
+        rad_yaw = self.cam_yaw * (pi / 180.0)
+        x = self.cam_dist * cos(rad_pitch) * sin(rad_yaw)
+        y = -self.cam_dist * cos(rad_pitch) * cos(rad_yaw)
+        z = self.cam_dist * sin(rad_pitch)
+        base.camera.setPos(x, y, z)
+        base.camera.lookAt(0, 0, 0)
+
+    def zoom_in(self):
+        self.cam_dist = max(2.0, self.cam_dist - 0.5)
+        self.update_camera()
+
+    def zoom_out(self):
+        self.cam_dist = min(50.0, self.cam_dist + 0.5)
+        self.update_camera()
+
+    def start_rotate(self):
+        if base.mouseWatcherNode.hasMouse():
+            self.mouse_down = True
+            m = base.mouseWatcherNode.getMouse()
+            self.last_mouse = (m.getX(), m.getY())
+
+    def stop_rotate(self):
+        self.mouse_down = False
+
+    def rotate_task(self, task):
+        # auto rotation
+        dt = globalClock.getDt()
+        self.planet_np.setH(self.planet_np.getH() + self.params['rotation_speed'] * dt)
+
+        # mouse drag rotates camera
+        if self.mouse_down and base.mouseWatcherNode.hasMouse():
+            m = base.mouseWatcherNode.getMouse()
+            mx, my = m.getX(), m.getY()
+            lx, ly = self.last_mouse
+            dx = (mx - lx) * 180
+            dy = (my - ly) * 180
+            self.cam_yaw -= dx
+            self.cam_pitch = max(-80, min(80, self.cam_pitch + dy))
+            self.update_camera()
+            self.last_mouse = (mx, my)
+        return Task.cont
+
+    # ---------- lights ----------
+    def setup_lights(self):
+        ambient = AmbientLight('ambient')
+        ambient.setColor((0.25, 0.25, 0.3, 1))
+        amb_np = render.attachNewNode(ambient)
+        render.setLight(amb_np)
+
+        dlight = DirectionalLight('dlight')
+        dlight.setColor((1.0, 0.95, 0.9, 1))
+        dnp = render.attachNewNode(dlight)
+        dnp.setHpr(50, -30, 0)
+        render.setLight(dnp)
+
+    # ---------- rebuild terrain ----------
+    def build_planet(self):
+        # clear existing
+        self.planet_np.node().removeAllChildren()
+
+        # create subdivided icosphere
+        verts = self.base_verts[:]
+        faces = self.base_faces[:]
+        for _ in range(max(0, int(self.params['subdiv']))):
+            verts, faces = subdivide(verts, faces)
+
+        # compute displaced vertices
+        displaced = []
+        for v in verts:
+            x, y, z = v
+            n = Vec3(x, y, z)
+            # noise in local space
+            nval = fractal_noise(x, y, z, frequency=self.params['frequency'], octaves=self.params['octaves'], seed=self.params['seed'])
+            # amplitude scales displacement
+            disp = 1.0 + nval * self.params['amplitude']
+            displaced.append((x * disp, y * disp, z * disp))
+
+        # color function based on displacement and normal
+        def color_func(v):
+            # choose color by height
+            x, y, z = v
+            nval = fractal_noise(x, y, z, frequency=self.params['frequency'], octaves=self.params['octaves'], seed=self.params['seed'])
+            h = (nval + 1.0) * 0.5  # map roughly to 0..1
+            # simple biomes: water (blue) if low, land (green) mid, mountain (gray/white) if high
+            if h < 0.35:
+                t = max(0.0, min(1.0, (h - 0.0) / 0.35))
+                return (0.0 * (1 - t) + 0.0 * t, 0.05 * (1 - t) + 0.3 * t, 0.3 * (1 - t) + 0.6 * t, 1.0)
+            elif h < 0.7:
+                t = (h - 0.35) / (0.35)
+                return (0.1 * (1 - t) + 0.2 * t, 0.25 * (1 - t) + 0.8 * t, 0.05 * (1 - t) + 0.2 * t, 1.0)
+            else:
+                t = (h - 0.7) / 0.3
+                return (0.5 * (1 - t) + 0.9 * t, 0.5 * (1 - t) + 0.95 * t, 0.5 * (1 - t) + 0.95 * t, 1.0)
+
+        # build geom
+        node = build_geom_node(displaced, faces, radius=self.params['radius'], color_func=color_func)
+        geom_np = self.planet_np.attachNewNode(node)
+        geom_np.setTwoSided(True)
+        geom_np.setRenderModeFilled()
+        geom_np.setShaderAuto()
+
+        # optional atmosphere
+        self.build_atmosphere()
+
+    def build_atmosphere(self):
+        # remove old
+        if self.atmos_np:
+            self.atmos_np.removeNode()
+            self.atmos_np = None
+        if not self.params['atmos_on']:
+            return
+
+        # use a slightly larger sphere by rebuilding a low-poly icosphere scaled up
+        verts = self.base_verts[:]
+        faces = self.base_faces[:]
+        for _ in range(2):
+            verts, faces = subdivide(verts, faces)
+
+        scale = self.params['radius'] * (1.0 + max(0.01, self.params['atmos_thickness']))
+        # color based on thickness
+        alpha = max(0.05, min(0.6, self.params['atmos_thickness']))
+
+        def atmos_color(v):
+            # bluish fade
+            return (0.2, 0.5, 1.0, max(0.02, alpha * (1.0 - v[2] * 0.5)))
+
+        node = build_geom_node(verts, faces, radius=scale, color_func=atmos_color)
+        self.atmos_np = render.attachNewNode(node)
+        self.atmos_np.setTransparency(TransparencyAttrib.M_alpha)
+        self.atmos_np.setBin('transparent', 20)
+        self.atmos_np.setDepthWrite(False)
+        self.atmos_np.setTwoSided(True)
+        # subtle scale/rotation effect
+        self.atmos_np.setCompass()  # keep orientation steady if parent rotates
+
+    # ---------- UI ----------
+    def build_ui(self):
+        x0 = -1.3
+        y = 0.85
+        spacing = 0.09
+
+        def add_slider(name, param_key, minv, maxv, default, decimals=2):
+            nonlocal y
+            DirectLabel(text=name, scale=0.045, pos=(x0, 0, y+0.02), frameColor=(0,0,0,0))
+            slider = DirectSlider(range=(minv, maxv), value=default, pageSize=(maxv-minv)/100.0,
+                                  scale=0.45, pos=(x0+0.7, 0, y), command=self.on_slider_change, extraArgs=[param_key])
+            y -= spacing
+            return slider
+
+        # sliders
+        self.sl_radius = add_slider('Radius', 'radius', 0.5, 6.0, self.params['radius'])
+        self.sl_subdiv = add_slider('Subdivision (0-3)', 'subdiv', 0, 3, self.params['subdiv'])
+        self.sl_ampl = add_slider('Terrain amplitude', 'amplitude', 0.0, 1.5, self.params['amplitude'])
+        self.sl_freq = add_slider('Terrain frequency', 'frequency', 0.2, 4.0, self.params['frequency'])
+        self.sl_oct = add_slider('Octaves', 'octaves', 1, 6, self.params['octaves'])
+        self.sl_atmos = add_slider('Atmos thickness', 'atmos_thickness', 0.0, 1.0, self.params['atmos_thickness'])
+        self.sl_rot = add_slider('Rotation speed', 'rotation_speed', -60, 60, self.params['rotation_speed'])
+        # seed slider
+        self.sl_seed = add_slider('Seed', 'seed', 0, 9999, self.params['seed'])
+
+        # atmosphere on/off
+        self.atm_check = DirectCheckButton(text="Atmosphere", scale=0.06, pos=(x0, 0, y), indicatorValue=self.params['atmos_on'], command=self.on_toggle_atmos)
+        y -= spacing
+
+        # rebuild button
+        DirectButton(text='Rebuild', scale=0.06, pos=(x0, 0, y), command=self.on_rebuild)
+        y -= spacing
+
+        # quick help
+        DirectLabel(text='Drag mouse to orbit, scroll to zoom', scale=0.04, pos=(-0.2,0, -0.95), frameColor=(0,0,0,0))
+
+    def on_slider_change(self, key):
+        # read all sliders
+        try:
+            self.params['radius'] = float(self.sl_radius['value'])
+            self.params['subdiv'] = int(round(float(self.sl_subdiv['value'])))
+            self.params['amplitude'] = float(self.sl_ampl['value'])
+            self.params['frequency'] = float(self.sl_freq['value'])
+            self.params['octaves'] = int(round(float(self.sl_oct['value'])))
+            self.params['atmos_thickness'] = float(self.sl_atmos['value'])
+            self.params['rotation_speed'] = float(self.sl_rot['value'])
+            self.params['seed'] = int(round(float(self.sl_seed['value'])))
+        except Exception as e:
+            print('UI read error', e)
+        # live update planet
+        self.build_planet()
+
+    def on_toggle_atmos(self, state):
+        self.params['atmos_on'] = bool(state)
+        self.build_planet()
+
+    def on_rebuild(self):
+        self.build_planet()
+
+
+if __name__ == '__main__':
+    app = PlanetSimulator()
+    app.run()
+```
+40. FAIL (Kinda close tho!)
+```
+Below are two Python files for a small **open-world, Toontown-like MMO** implemented using **Panda3D** (client) and the Python standard library (server). No external assets or libraries besides Panda3D are used. Save them as `server.py` and `client.py` in the same folder. Run `python server.py` first, then `python client.py` (you can run many clients to simulate multiple players).
+
+---
+
+server.py
+
+```python
+#!/usr/bin/env python3
+"""
+Minimal authoritative server for a Toontown-like toy MMO.
+- TCP JSON protocol (newline-delimited)
+- Keeps authoritative world: players, enemies (boxes), interactive elements, areas
+- Broadcasts world snapshots to all connected clients
+
+This is intentionally simple and readable, not a production server.
+"""
+
+import socket
+import threading
+import json
+import time
+import random
+import traceback
+from collections import defaultdict
+
+HOST = '0.0.0.0'
+PORT = 52000
+TICK = 1.0 / 20.0  # 20 Hz
+BROADCAST_INTERVAL = 1.0 / 10.0  # 10 Hz
+
+# World configuration
+AREAS = [
+    {"name": "ToonTown Plaza", "bounds": (-50, -50, 50, 50)},
+    {"name": "Silly Suburbs", "bounds": (60, -40, 140, 40)},
+    {"name": "Boxy Bay", "bounds": (-140, -60, -60, 60)},
+]
+
+WEAPONS = ["scribble_slap", "squirt", "pie", "anvil_throw"]
+
+next_entity_id = 1
+entity_lock = threading.Lock()
+
+def gen_id():
+    global next_entity_id
+    with entity_lock:
+        eid = next_entity_id
+        next_entity_id += 1
+    return eid
+
+class Player:
+    def __init__(self, conn, addr):
+        self.id = gen_id()
+        self.conn = conn
+        self.addr = addr
+        self.name = f"Player{self.id}"
+        self.x = random.uniform(-20, 20)
+        self.y = random.uniform(-20, 20)
+        self.hp = 137
+        self.weapons = WEAPONS[:]  # all weapons by default
+        self.area = area_for_pos(self.x, self.y)
+        self.last_input_time = time.time()
+        self.last_recv = time.time()
+
+class Enemy:
+    def __init__(self, area_name, level=1):
+        self.id = gen_id()
+        self.level = level
+        self.hp = 20 * level
+        self.x, self.y = spawn_point_for_area(area_name)
+        self.area = area_name
+        self.type = 'box'  # enemies are boxes of varied levels
+
+# helpers
+
+def area_for_pos(x, y):
+    for a in AREAS:
+        minx, miny, maxx, maxy = a['bounds']
+        if minx <= x <= maxx and miny <= y <= maxy:
+            return a['name']
+    return AREAS[0]['name']
+
+
+def spawn_point_for_area(area_name):
+    for a in AREAS:
+        if a['name'] == area_name:
+            minx, miny, maxx, maxy = a['bounds']
+            return (random.uniform(minx+2, maxx-2), random.uniform(miny+2, maxy-2))
+    return (0,0)
+
+# Server state
+players = {}  # conn -> Player
+players_by_id = {}
+enemies = {}  # id -> Enemy
+clients_lock = threading.Lock()
+
+# simple interactive elements
+interactive_elements = {
+    # id: {x,y,type,state}
+}
+
+# populate some interactive elements
+for i in range(1,6):
+    interactive_elements[i] = {"id": i, "x": random.uniform(-30,30), "y": random.uniform(-30,30), "type": "button", "state": False}
+
+# spawn enemies per area
+def spawn_wave():
+    for a in AREAS:
+        count = random.randint(2,5)
+        for _ in range(count):
+            lvl = random.choices([1,2,3], weights=[60,30,10])[0]
+            e = Enemy(a['name'], level=lvl)
+            enemies[e.id] = e
+
+spawn_wave()
+
+# networking helpers (newline-delimited JSON)
+
+def send_json(conn, obj):
+    try:
+        data = json.dumps(obj) + '\n'
+        conn.sendall(data.encode('utf-8'))
+    except Exception:
+        # callers handle connection removal
+        raise
+
+# read single newline-terminated JSON message (non-blocking wrapper)
+
+def recv_json(conn):
+    try:
+        data = b''
+        while True:
+            chunk = conn.recv(4096)
+            if not chunk:
+                return None
+            data += chunk
+            if b'\n' in data:
+                line, rest = data.split(b'\n', 1)
+                # put back rest into socket buffer isn't possible; so we assume messages come clean per recv call in this simple server.
+                return json.loads(line.decode('utf-8'))
+    except BlockingIOError:
+        return None
+    except Exception:
+        return None
+
+# handle client in thread
+
+def client_thread(conn, addr):
+    print('Client connected', addr)
+    conn.settimeout(1.0)
+    p = Player(conn, addr)
+    with clients_lock:
+        players[conn] = p
+        players_by_id[p.id] = p
+    # send welcome with assigned id and starting state
+    try:
+        send_json(conn, {"type":"welcome","your_id":p.id,"hp":p.hp,"weapons":p.weapons, "pos": [p.x,p.y]})
+    except Exception:
+        pass
+
+    buffer = b''
+    try:
+        while True:
+            try:
+                data = conn.recv(4096)
+                if not data:
+                    break
+            except socket.timeout:
+                # regular tick handled by main loop
+                continue
+            except Exception:
+                break
+
+            buffer += data
+            while b'\n' in buffer:
+                line, buffer = buffer.split(b'\n', 1)
+                if not line.strip():
+                    continue
+                try:
+                    msg = json.loads(line.decode('utf-8'))
+                except Exception:
+                    print('Bad msg from', addr)
+                    continue
+                p.last_recv = time.time()
+                handle_client_message(p, msg)
+    except Exception:
+        traceback.print_exc()
+    finally:
+        print('Client disconnected', addr)
+        with clients_lock:
+            try:
+                del players[conn]
+            except Exception:
+                pass
+            try:
+                del players_by_id[p.id]
+            except Exception:
+                pass
+        try:
+            conn.close()
+        except Exception:
+            pass
+
+# message handler
+
+def handle_client_message(p, msg):
+    # messages: {"type": "input", "move": [dx,dy]} or {"type":"action","action":"attack","target":id}
+    t = msg.get('type')
+    if t == 'input':
+        mv = msg.get('move')
+        if mv:
+            # clamp small movement
+            dx, dy = mv
+            speed = 3.0
+            p.x += max(-1, min(1, dx)) * speed * TICK
+            p.y += max(-1, min(1, dy)) * speed * TICK
+            p.area = area_for_pos(p.x, p.y)
+            p.last_input_time = time.time()
+    elif t == 'action':
+        act = msg.get('action')
+        if act == 'attack':
+            target_id = msg.get('target')
+            # simple attack: deal damage based on random weapon
+            weapon = random.choice(p.weapons)
+            dmg = random.randint(8, 20)
+            if target_id in enemies:
+                enemies[target_id].hp -= dmg
+                if enemies[target_id].hp <= 0:
+                    del enemies[target_id]
+            # broadcast immediate tiny event by storing on player object
+    elif t == 'interact':
+        elem_id = msg.get('id')
+        if elem_id in interactive_elements:
+            e = interactive_elements[elem_id]
+            e['state'] = not e['state']
+            # interaction spawns a friendly hat (purely cosmetic) or heals player
+            p.hp = min(137, p.hp + 10)
+
+# world update: enemy AI and simple mechanics
+
+def world_tick(dt):
+    # enemies move towards nearest player in their area
+    for eid, en in list(enemies.items()):
+        # find nearest player in same area
+        nearest = None
+        nd = 1e9
+        for pl in players_by_id.values():
+            if pl.area != en.area: continue
+            d = (pl.x - en.x)**2 + (pl.y - en.y)**2
+            if d < nd:
+                nd = d; nearest = pl
+        if nearest:
+            # move towards player
+            speed = 1.0 + 0.2 * en.level
+            if nd > 0.1:
+                dx = nearest.x - en.x
+                dy = nearest.y - en.y
+                dist = (dx**2 + dy**2)**0.5
+                en.x += (dx/dist) * speed * dt
+                en.y += (dy/dist) * speed * dt
+            # if close, attack
+            if nd < 1.5:
+                damage = 2 * en.level
+                nearest.hp -= damage
+                if nearest.hp <= 0:
+                    # respawn player
+                    nearest.hp = 137
+                    nearest.x, nearest.y = spawn_point_for_area(nearest.area)
+
+# broadcast world state
+last_broadcast = 0.0
+
+def broadcast_loop():
+    global last_broadcast
+    while True:
+        now = time.time()
+        if now - last_broadcast >= BROADCAST_INTERVAL:
+            snapshot = build_snapshot()
+            with clients_lock:
+                for conn, p in list(players.items()):
+                    try:
+                        send_json(conn, {"type":"snapshot","world": snapshot})
+                    except Exception:
+                        # drop client; it'll be cleaned by their thread
+                        try:
+                            conn.close()
+                        except Exception:
+                            pass
+            last_broadcast = now
+        time.sleep(0.01)
+
+def build_snapshot():
+    # include players, enemies, interactive elements, areas
+    pls = []
+    for p in list(players_by_id.values()):
+        pls.append({"id": p.id, "name": p.name, "x": p.x, "y": p.y, "hp": p.hp, "area": p.area})
+    ens = []
+    for e in list(enemies.values()):
+        ens.append({"id": e.id, "type": e.type, "level": e.level, "x": e.x, "y": e.y, "hp": e.hp, "area": e.area})
+    elems = list(interactive_elements.values())
+    return {"time": time.time(), "players": pls, "enemies": ens, "elements": elems, "areas": AREAS}
+
+# main server loop
+
+def server_main():
+    srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind((HOST, PORT))
+    srv.listen(32)
+    srv.settimeout(1.0)
+    print(f"Server listening on {HOST}:{PORT}")
+
+    # start broadcaster
+    threading.Thread(target=broadcast_loop, daemon=True).start()
+
+    last_time = time.time()
+    try:
+        while True:
+            # accept new clients
+            try:
+                conn, addr = srv.accept()
+                conn.setblocking(True)
+                threading.Thread(target=client_thread, args=(conn, addr), daemon=True).start()
+            except socket.timeout:
+                pass
+
+            now = time.time()
+            dt = now - last_time
+            if dt >= TICK:
+                # world tick
+                world_tick(dt)
+                last_time = now
+
+            # optional: respawn enemies if low
+            if len(enemies) < 8:
+                spawn_wave()
+
+    except KeyboardInterrupt:
+        print('Shutting down server')
+    finally:
+        srv.close()
+
+if __name__ == '__main__':
+    server_main()
+```
+
+---
+
+client.py
+
+```python
+#!/usr/bin/env python3
+"""
+Panda3D client for the toy MMO server.
+- Connects to server, receives snapshots, renders simple world
+- WASD to move, mouse click to attack nearest enemy
+- Interactive elements can be clicked to toggle
+
+Note: keep Panda3D installed. Run multiple clients to test multiplayer.
+"""
+
+import socket
+import threading
+import json
+import time
+import math
+import random
+
+from direct.showbase.ShowBase import ShowBase
+from direct.task import Task
+from panda3d.core import WindowProperties, TextNode, CardMaker, NodePath
+from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode
+
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 52000
+
+class NetClient(threading.Thread):
+    def __init__(self, host, port, on_snapshot):
+        super().__init__(daemon=True)
+        self.host = host; self.port = port
+        self.on_snapshot = on_snapshot
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.settimeout(5.0)
+        self.running = True
+        self.buffer = b''
+        try:
+            self.sock.connect((host, port))
+            self.sock.settimeout(0.5)
+        except Exception as e:
+            print('Could not connect to server:', e)
+            raise
+
+    def run(self):
+        while self.running:
+            try:
+                data = self.sock.recv(4096)
+                if not data:
+                    print('Server closed'); break
+            except Exception:
+                time.sleep(0.01); continue
+            self.buffer += data
+            while b'\n' in self.buffer:
+                line, self.buffer = self.buffer.split(b'\n', 1)
+                if not line.strip():
+                    continue
+                try:
+                    msg = json.loads(line.decode('utf-8'))
+                except Exception:
+                    continue
+                if msg.get('type') == 'snapshot':
+                    self.on_snapshot(msg['world'])
+                elif msg.get('type') == 'welcome':
+                    print('Welcome from server, assigned id', msg.get('your_id'))
+
+    def send(self, obj):
+        try:
+            self.sock.sendall((json.dumps(obj) + '\n').encode('utf-8'))
+        except Exception:
+            pass
+
+    def close(self):
+        self.running = False
+        try:
+            self.sock.close()
+        except Exception:
+            pass
+
+class ToonClient(ShowBase):
+    def __init__(self, server_host=SERVER_HOST, server_port=SERVER_PORT):
+        ShowBase.__init__(self)
+        self.disable_mouse()
+        props = WindowProperties(); props.setTitle('Toon-ish MMO Client')
+        self.win.requestProperties(props)
+
+        self.net = NetClient(server_host, server_port, self.on_snapshot)
+        self.net.start()
+
+        # local interpolation state
+        self.players = {}  # id -> node
+        self.enemies = {}
+        self.elements = {}
+        self.local_id = None
+        self.local_hp = 137
+
+        # HUD
+        self.hud_text = self.make_text('', pos=(0.02, 0.95), align=TextNode.ALeft)
+
+        # create a simple ground
+        cm = CardMaker('ground')
+        cm.setFrame(-200,200,-200,200)
+        ground = self.render.attachNewNode(cm.generate())
+        ground.setP(-90)
+        ground.setZ(0)
+        ground.setColor(0.6, 0.9, 0.6, 1)
+
+        # camera
+        self.cam.setPos(0, -60, 30)
+        self.cam.lookAt(0,0,0)
+
+        # input state
+        self.key_map = {k:False for k in ['w','s','a','d']}
+        self.accept('w', self.set_key, ['w', True]); self.accept('w-up', self.set_key, ['w', False])
+        self.accept('s', self.set_key, ['s', True]); self.accept('s-up', self.set_key, ['s', False])
+        self.accept('a', self.set_key, ['a', True]); self.accept('a-up', self.set_key, ['a', False])
+        self.accept('d', self.set_key, ['d', True]); self.accept('d-up', self.set_key, ['d', False])
+        self.accept('mouse1', self.on_click)
+
+        # collision for clicks
+        self.picker = CollisionTraverser()
+        self.queue = CollisionHandlerQueue()
+        self.pickerNode = CollisionNode('mouseRay')
+        self.pickerNP = self.camera.attachNewNode(self.pickerNode)
+        self.pickerRay = CollisionRay()
+        self.pickerNode.addSolid(self.pickerRay)
+        self.picker.addCollider(self.pickerNP, self.queue)
+
+        self.taskMgr.add(self.client_update, 'clientUpdate')
+
+    def set_key(self, k, v):
+        self.key_map[k] = v
+
+    def make_text(self, txt, pos=(0,0), align=TextNode.ACenter):
+        tn = TextNode('hud')
+        tn.setText(txt)
+        tn.setAlign(align)
+        np = self.aspect2d.attachNewNode(tn)
+        np.setScale(0.05)
+        np.setPos(pos[0], 0, pos[1])
+        return tn
+
+    def on_snapshot(self, world):
+        # update local model from server snapshot (we'll smoothly interpolate in render)
+        # store as raw data and create nodes as necessary
+        self.world = world
+        # update players
+        for p in world['players']:
+            pid = p['id']
+            if pid not in self.players:
+                node = self.create_player_node(p)
+                self.players[pid] = {'node': node, 'target': (p['x'], p['y']), 'hp': p['hp'], 'name': p['name']}
+            else:
+                self.players[pid]['target'] = (p['x'], p['y'])
+                self.players[pid]['hp'] = p['hp']
+                self.players[pid]['name'] = p['name']
+        # enemies
+        server_enemy_ids = set()
+        for e in world['enemies']:
+            server_enemy_ids.add(e['id'])
+            if e['id'] not in self.enemies:
+                node = self.create_enemy_node(e)
+                self.enemies[e['id']] = {'node': node, 'target': (e['x'], e['y']), 'hp': e['hp'], 'level': e['level']}
+            else:
+                self.enemies[e['id']]['target'] = (e['x'], e['y'])
+                self.enemies[e['id']]['hp'] = e['hp']
+        # remove missing
+        for eid in list(self.enemies.keys()):
+            if eid not in server_enemy_ids:
+                self.enemies[eid]['node'].removeNode(); del self.enemies[eid]
+        # interactive elements
+        for el in world['elements']:
+            if el['id'] not in self.elements:
+                node = self.create_element_node(el)
+                self.elements[el['id']] = {'node': node, 'state': el['state']}
+            else:
+                self.elements[el['id']]['state'] = el['state']
+        # find local player id and hp
+        # best effort: find nearest player to camera center
+        # server sends assigned id in welcome; we didn't parse it—try inferring last seen player
+        if hasattr(self, 'world'):
+            # if local_id is None, pick a player whose name starts with "Player" and small id? we'll keep it simple and not assume identity.
+            # But we can display a HUD with first player
+            pass
+
+    def create_player_node(self, p):
+        # simple toon: a colored sphere-like card and a name label
+        cm = CardMaker(f'player{p["id"]}')
+        cm.setFrame(-1,1,-1,1)
+        node = self.render.attachNewNode(cm.generate())
+        node.setBillboardPointEye()
+        node.setScale(1.0)
+        node.setPos(p['x'], 0, 1)
+        color = (random.random()*0.7+0.3, random.random()*0.7+0.3, random.random()*0.7+0.3,1)
+        node.setColor(*color)
+        return node
+
+    def create_enemy_node(self, e):
+        cm = CardMaker(f'enemy{e["id"]}')
+        cm.setFrame(-1,1,-1,1)
+        node = self.render.attachNewNode(cm.generate())
+        node.setPos(e['x'], 0, 1)
+        node.setScale(1.5)
+        # color by level
+        lev = e.get('level',1)
+        node.setColor(0.6, 0.6-0.1*lev, 0.2+0.1*lev, 1)
+        return node
+
+    def create_element_node(self, el):
+        cm = CardMaker(f'elem{el["id"]}')
+        cm.setFrame(-0.8,0.8,-0.4,0.4)
+        node = self.render.attachNewNode(cm.generate())
+        node.setPos(el['x'], 0, 0.5)
+        node.setScale(1.0)
+        node.setColor(0.2,0.2,0.9,1)
+        return node
+
+    def client_update(self, task):
+        dt = globalClock.getDt()
+        # send input
+        dx = dy = 0.0
+        if self.key_map['w']: dy += 1
+        if self.key_map['s']: dy -= 1
+        if self.key_map['a']: dx -= 1
+        if self.key_map['d']: dx += 1
+        if dx or dy:
+            self.net.send({"type":"input","move":[dx,dy]})
+        # interpolate world objects
+        for pid, info in list(self.players.items()):
+            tx, ty = info['target']
+            npnode = info['node']
+            x,_,_ = npnode.getPos()
+            # simple linear lerp on x axis; we only store x in pos, use y ignored by render
+            newx = x + (tx - x) * min(5*dt, 1)
+            npnode.setX(newx)
+        for eid, info in list(self.enemies.items()):
+            tx, ty = info['target']
+            npnode = info['node']
+            x,_,_ = npnode.getPos()
+            newx = x + (tx - x) * min(5*dt, 1)
+            npnode.setX(newx)
+        # update HUD
+        self.hud_text.setText(f"Players: {len(self.players)}  Enemies: {len(self.enemies)}")
+        return Task.cont
+
+    def on_click(self):
+        # send attack command for nearest enemy to camera center
+        if not self.enemies:
+            return
+        # pick nearest by x distance to camera center (which is 0 in our simplified render)
+        nearest = None; nd = 1e9
+        for eid, info in self.enemies.items():
+            x,_,_ = info['node'].getPos()
+            d = abs(x - 0)
+            if d < nd:
+                nd = d; nearest = eid
+        if nearest:
+            self.net.send({"type":"action","action":"attack","target": nearest})
+
+    def destroy(self):
+        self.net.close()
+        ShowBase.destroy(self)
+
+if __name__ == '__main__':
+    try:
+        app = ToonClient()
+        app.run()
+    except Exception as e:
+        print('Error starting client:', e)
+```
+
+---
+
+# Notes & how to run
+
+1. Install Panda3D (`pip install panda3d`) if you haven't already.
+2. Save `server.py` and `client.py` in the same folder.
+3. Run `python server.py` in a terminal. Then run `python client.py` (one or more times) to connect.
+4. Controls in client: WASD to move, mouse click to attack nearest enemy, click interactive elements using the mouse (left-click) — interactive element toggling and healing is simulated.
+
+This is intentionally a compact example to be easy to extend: you can add better models, polish the network protocol, add reliable UDP, prediction, smoothing, player identity / login, and fancy UI. If you'd like, I can: add cosmetics, make character randomization choices visible in a spawn menu, improve interpolation, or convert to UDP for lower latency.
+
+"""
