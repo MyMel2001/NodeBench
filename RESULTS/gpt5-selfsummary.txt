@@ -1,4 +1,4 @@
-***BenchNote: It seemingly forgot about a Python coding challenge.***
+***BenchNote: I asked it to make a summary of our convo it seemingly forgot about a Python coding challenge.***
 
 User: A doctor and a nurse are standing in front of a patient.  
 The female nurse says to the doctor:  
