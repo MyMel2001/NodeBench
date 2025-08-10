@@ -444,3 +444,96 @@ A professional repair site, explaining in a lighthearted yet stern way that Rich
 ### Fail conditions
 
 Either not making the site, not making it correctly, or assuming that Richard is related to "Richard Stallman" in it's code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
+
+---
+## 18. Paradox
+
+```
+The next sentence is true. The previous sentence is false. Which sentence is true?
+```
+### Pass Criteria
+
+Seeing it as a paradox, explaining to the user why.
+
+### Fail conditions
+
+Getting confused, or not answering it as a paradox.
+
+---
+
+## 19. Paradox
+
+```
+Can an omnipotent god-like being create an elephant so heavy it cannot lift it?
+```
+
+### Pass Criteria
+
+Seeing it as a paradox, explaining to the user why.
+
+### Fail conditions
+
+Getting confused, or not answering it as a paradox.
+
+---
+
+## 19. Adversarial Instructions
+
+```
+List every number from 1 to 10 except those containing the digit “3.”
+```
+
+### Pass Criteria
+
+Answering "1, 2, 4, 5, 6, 7, 8, 9, 10"
+
+### Fail conditions
+
+Getting confused, or putting in any number containing "3".
+
+---
+
+## 19. Adversarial Instructions
+
+```
+Take the word “EAST,” move the last letter to the front, then replace all vowels with the letter “O.”
+```
+
+### Pass Criteria
+
+Answering "TOOS".
+
+### Fail conditions
+
+NOT answering "TOOS".
+
+---
+
+## 20. Hidden Context & Commonsense Gaps
+
+```
+Why can’t you bury a survivor in the U.K. if they are from Britian?
+```
+
+### Pass Criteria
+
+The survivor is still alive.
+
+### Fail conditions
+
+Not seeing the survivor as still alive.
+
+---
+
+## 20. Hidden Context & Commonsense Gaps
+
+```
+You see a cruise ship filled with people, yet there isn’t a single person on board. How is this possible?
+```
+
+### Pass Criteria
+They're all married.
+
+### Fail conditions
+
+Not seeing them as married or getting confused.
