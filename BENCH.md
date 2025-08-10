@@ -525,15 +525,56 @@ Not seeing the survivor as still alive.
 
 ---
 
-## 20. Hidden Context & Commonsense Gaps
+## 21. zzuBzziF
 
 ```
-You see a cruise ship filled with people, yet there isn’t a single person on board. How is this possible?
+Write a program that prints numbers from 1 to 100 with the following rules:
+
+    Print "Fizz" instead of the number if divisible by 3.
+
+    Print "Buzz" instead if divisible by 5.
+
+    Print "FizzBuzz" if divisible by both 3 and 5.
+
+    If the number is prime, reverse the word before printing (e.g., "zziF", "zzuB", "zzuBzziF").
+    Example Output: 1, 2, zziF, 4, zzuB, zziF, 7, 8, zziF, zzuB, 11, zziF, 13, 14, zzuBzziF, ...
 ```
 
 ### Pass Criteria
-They're all married.
+Runs as intented
 
 ### Fail conditions
+Not executing correctly
 
-Not seeing them as married or getting confused.
+---
+
+## 22. Reversing Words
+
+```
+Write a function that takes a string and reverses the order of the words, but keeps the letters in each word in the same order.
+Example:
+Input: "hello world from AI"
+Output: "AI from world hello"
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+## 23. Case-flipping palindrome check
+
+```
+Write a function that determines if a given string is a palindrome, ignoring case and spaces.
+If it is a palindrome, return the same string but with all letter cases flipped (uppercase → lowercase, lowercase → uppercase).
+Example:
+Input: "Never Odd Or Even"
+Output: "nEVER oDD oR eVEN" and True
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
