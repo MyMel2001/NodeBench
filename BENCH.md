@@ -840,3 +840,38 @@ Runs and created as intented
 
 ### Fail conditions
 Not executing correctly
+
+## 41. ObsJSBench
+
+### Prompt
+```
+Goal: Use fluture to fetch JSON from a public API, transform it, and handle errors functionally — without ever using native Promise, async/await, or .then().
+
+Requirements:
+
+    * Use fluture to fetch data from https://jsonplaceholder.typicode.com/todos.
+
+    * Transform the data to only include the first 5 items, each as {id, title}.
+
+    * If the fetch fails, return an array with one object: {error: "fetch failed"}.
+
+    * Log the final array to the console.
+
+    * The code must be purely functional with no side-effects except the final console.log.
+```
+
+### Pass Criteria
+
+* Runs without syntax errors.
+
+* Successfully logs 5 objects from the API when online.
+
+* On network error, logs ```[ { error: "fetch failed" } ]```.
+
+* No usage of native Promise methods or async/await.
+
+### Fail conditions
+* Not executing correctly
+* Uses .then() or await.
+* Returns more than 5 items.
+ Has mutable variable reassignment in the transformation pipeline.
