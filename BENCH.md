@@ -654,6 +654,8 @@ Not executing correctly
 ### Prompt
 ```
 Make a Pinball game in PyGame, similar to the one that came with Windows XP
+
+No external assets or libraries besides the ones specified.
 ```
 
 ### Pass Criteria
@@ -667,7 +669,9 @@ Not executing correctly
 ### Prompt
 ```
 Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
-and shoot monsters
+and shoot monsters.
+
+No external assets or libraries besides the ones specified.
 ```
 
 ### Pass Criteria
