@@ -775,3 +775,17 @@ Answer 'Linux'.
 
 ### Fail conditions
 Answer improperly.
+
+
+## 38. Self-count++
+
+### Prompt
+```
+Create a decently long sentence, then give me a word count for that sentence times two.
+```
+
+### Pass Criteria
+Give a nice sentence and a numerical value of double the wordcount.
+
+### Fail conditions
+Answer improperly.
