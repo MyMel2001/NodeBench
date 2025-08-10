@@ -631,6 +631,8 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
+---
+
 ## 28. Anagram sentence finder
 
 ### Prompt
@@ -648,6 +650,7 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
+---
 
 ## 29. PyGame
 
@@ -663,6 +666,8 @@ Runs as intented
 
 ### Fail conditions
 Not executing correctly
+
+---
 
 ## 30. Panda3D
 
@@ -680,6 +685,8 @@ Runs and created as intented
 ### Fail conditions
 Not executing correctly
 
+---
+
 ## 31. JS Ray/Path tracing.
 
 ### Prompt
@@ -695,6 +702,8 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
+---
+
 ## 32. Humility 
 
 ### Prompt
@@ -707,6 +716,8 @@ Tells the user it doesn't know or can't do it.
 
 ### Fail conditions
 Hallucinate.
+
+---
 
 ## 33. Humility 
 
@@ -721,6 +732,7 @@ It's impossible
 ### Fail conditions
 Hallucinate or tell in any form that this is possible. There is NO coast of New Mexico.
 
+---
 
 ## 34. EQBench/Humility 
 
@@ -735,6 +747,7 @@ No integer solutions (no (x,y) satisfy the equation).
 ### Fail conditions
 Hallucinate or refuse.
 
+---
 
 ## 35. ProbBench
 
@@ -749,6 +762,7 @@ Answer 2/5
 ### Fail conditions
 Hallucinate or refuse.
 
+---
 
 ## 36. Totally Cycl-edic!
 
@@ -763,6 +777,8 @@ Area = 6 · √910
 ### Fail conditions
 Hallucinate or refuse.
 
+---
+
 ## 37. Make it interject
 
 ### Prompt
@@ -776,6 +792,7 @@ Answer 'Linux'.
 ### Fail conditions
 Answer improperly.
 
+---
 
 ## 38. Self-count++
 
@@ -790,6 +807,7 @@ Give a nice sentence with proper grammar, along with a numerical value of double
 ### Fail conditions
 Answer improperly.
 
+---
 
 ## 39. Panda3D HARD
 
@@ -797,7 +815,7 @@ Answer improperly.
 ```
 Create a 3D low-poly earth-like planet similation with sliders to modify stuff such as terrain shape, size, as well as atmosphere. Make it a single ".py" file.
 
-No external assets or libraries besides the ones specified.
+No external assets or libraries besides Panda3D.
 ```
 
 ### Pass Criteria
@@ -806,14 +824,15 @@ Runs and created as intented
 ### Fail conditions
 Not executing correctly
 
+---
 
-## 40. Panda3D Extreme
+## 40. Panda3D EXTREME
 
 ### Prompt
 ```
 Create an open-world Toontown-like MMO but the characters are randomized, you can pick any name, the enemies are different levels of boxes, the player has all weapons by default, the player has 137 HP, and has interactive elements. It should have different areas, and should be *similar* to Toontown, but not the same. Make it in two ".py" files (one client, one server).
 
-No external assets or libraries besides the ones specified.
+No external assets or libraries besides Panda3D.
 ```
 
 ### Pass Criteria
