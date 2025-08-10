@@ -785,7 +785,7 @@ Create a decently long sentence, then give me a word count for that sentence tim
 ```
 
 ### Pass Criteria
-Give a nice sentence and a numerical value of double the wordcount.
+Give a nice sentence with proper grammar, along with a numerical value of double the wordcount.
 
 ### Fail conditions
 Answer improperly.
