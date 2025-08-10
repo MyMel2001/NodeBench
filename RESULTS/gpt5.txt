@@ -1968,3 +1968,9 @@ renderSample();
 </body>
 </html>
 ```
+32. PASS
+33. FAIL (Implied that New Mexico MIGHT have a coast)
+34. PASS
+35. PASS
+36. PASS
+37. PASS
