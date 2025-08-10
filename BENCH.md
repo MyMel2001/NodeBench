@@ -675,7 +675,7 @@ No external assets or libraries besides the ones specified.
 ```
 
 ### Pass Criteria
-Runs as intented
+Runs and created as intented
 
 ### Fail conditions
 Not executing correctly
@@ -789,3 +789,35 @@ Give a nice sentence with proper grammar, along with a numerical value of double
 
 ### Fail conditions
 Answer improperly.
+
+
+## 39. Panda3D HARD
+
+### Prompt
+```
+Create a 3D low-poly earth-like planet similation with sliders to modify stuff such as terrain shape, size, as well as atmosphere. Make it a single ".py" file.
+
+No external assets or libraries besides the ones specified.
+```
+
+### Pass Criteria
+Runs and created as intented
+
+### Fail conditions
+Not executing correctly
+
+
+## 40. Panda3D Extreme
+
+### Prompt
+```
+Create an open-world Toontown-like MMO but the characters are randomized, you can pick any name, the enemies are different levels of boxes, the player has all weapons by default, the player has 137 HP, and has interactive elements. It should have different areas, and should be *similar* to Toontown, but not the same. Make it in two ".py" files (one client, one server).
+
+No external assets or libraries besides the ones specified.
+```
+
+### Pass Criteria
+Runs and created as intented
+
+### Fail conditions
+Not executing correctly
