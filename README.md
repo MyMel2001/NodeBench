@@ -1,4 +1,4 @@
 # NodeBench
 MyMel2001 official AI benchmark suite - testing if the AI *nodes* how to do stuff. :p
 
-***One-shot only, no skips.***
+***One-shot only, no skips, no hints, don't tell the AI you're benchmarking it.***
