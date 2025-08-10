@@ -887,7 +887,7 @@ Requirements:
         * Sum the squares.
     * Print the sum as the only output.
 
-    No for, range, or manual index-based loops allowed - all transformations must use the library’s functional methods.
+    No for, range, or manual index-based loops allowed - all transformations must use the librarys functional methods.
 
 Just make a single ".go" file.
 ```
