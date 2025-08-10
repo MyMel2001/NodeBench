@@ -647,3 +647,31 @@ Runs as intented
 
 ### Fail conditions
 Not executing correctly
+
+
+## 29. PyGame
+
+### Prompt
+```
+Make a Pinball game in PyGame, similar to the one that came with Windows XP
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+## 30. Panda3D
+
+### Prompt
+```
+Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
+and shoot monsters
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
