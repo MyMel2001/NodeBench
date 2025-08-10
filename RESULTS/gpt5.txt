@@ -841,3 +841,1130 @@
 </body>
 </html>
 ```
+18. PASS
+19. PASS
+20. PASS
+21. PASS
+22. PASS
+23. FAIL, SRC:
+```
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+for num in range(1, 101):
+    output = ""
+    if num % 3 == 0:
+        output += "Fizz"
+    if num % 5 == 0:
+        output += "Buzz"
+
+    # If number is prime, reverse the word (if any)
+    if is_prime(num) and output:
+        output = output[::-1]
+
+    # If no special word, just print the number
+    print(output if output else num)
+```
+24. PASS, SRC:
+```
+def reverse_words(sentence):
+    words = sentence.split()
+    reversed_order = words[::-1]
+    return " ".join(reversed_order)
+
+# Example usage
+print(reverse_words("hello world from AI"))  # Output: "AI from world hello"
+```
+25. PASS, SRC:
+```
+def palindrome_with_case_flip(s):
+    # Remove spaces and make lowercase for palindrome check
+    cleaned = "".join(s.split()).lower()
+    is_palindrome = cleaned == cleaned[::-1]
+
+    if is_palindrome:
+        flipped = s.swapcase()  # Flip letter cases
+        return flipped, True
+    else:
+        return s, False
+
+# Example usage
+result, is_pal = palindrome_with_case_flip("Never Odd Or Even")
+print(result, is_pal)  # Output: nEVER oDD oR eVEN True
+
+```
+26. PASS, SRC:
+```
+def find_missing_number(nums):
+    n = len(nums) + 1  # One number is missing
+    expected_sum = n * (n + 1) // 2
+    actual_sum = sum(nums)
+    return expected_sum - actual_sum
+
+# Example usage
+print(find_missing_number([3, 7, 1, 2, 8, 4, 5]))  # Output: 6
+```
+27. PASS, SRC:
+```
+def calculator():
+    result = 0
+    last_operation = None  # (op, operand)
+
+    print("Simple Calculator. Commands: +, -, *, /, undo, quit")
+    print("Start value:", result)
+
+    while True:
+        cmd = input("> ").strip().lower()
+
+        if cmd == "quit":
+            break
+
+        elif cmd == "undo":
+            if last_operation:
+                op, operand = last_operation
+                if op == "+":
+                    result -= operand
+                elif op == "-":
+                    result += operand
+                elif op == "*":
+                    result /= operand
+                elif op == "/":
+                    result *= operand
+                print("Undo done. Result:", result)
+                last_operation = None
+            else:
+                print("Nothing to undo.")
+
+        else:
+            try:
+                op, num_str = cmd.split()
+                num = float(num_str)
+                if op == "+":
+                    result += num
+                elif op == "-":
+                    result -= num
+                elif op == "*":
+                    result *= num
+                elif op == "/":
+                    if num == 0:
+                        print("Error: Division by zero.")
+                        continue
+                    result /= num
+                else:
+                    print("Unknown operation.")
+                    continue
+
+                last_operation = (op, num)
+                print("Result:", result)
+
+            except ValueError:
+                print("Invalid input. Example: + 5, * 2, undo, quit.")
+
+if __name__ == "__main__":
+    calculator()
+```
+28. PASS, SRC:
+
+```
+from collections import Counter
+
+def find_rearrangements(dictionary, sentence):
+    letters = Counter(sentence.replace(" ", "").lower())
+    dictionary = [word.lower() for word in dictionary if not (Counter(word) - letters)]
+    results = []
+
+    def backtrack(path, remaining):
+        if not remaining:
+            results.append(" ".join(path))
+            return
+        for word in dictionary:
+            word_count = Counter(word)
+            if not (word_count - remaining):  # word can be formed
+                backtrack(path + [word], remaining - word_count)
+
+    backtrack([], letters)
+    return results
+
+# Example usage
+dictionary = ["eat", "tea", "ate", "tan", "nat", "bat"]
+sentence = "ate bat"
+print(find_rearrangements(dictionary, sentence))
+
+```
+
+29. PASS (BUT BASIC), SRC:
+```
+import pygame
+import math
+import random
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+FPS = 60
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("PyPinball")
+clock = pygame.time.Clock()
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+RED = (255, 50, 50)
+GREEN = (0, 255, 0)
+BLUE = (50, 50, 255)
+
+# Ball
+ball_radius = 10
+ball_pos = [WIDTH // 2, HEIGHT // 4]
+ball_vel = [0, 0]
+
+# Gravity
+GRAVITY = 0.3
+FRICTION = 0.99
+
+# Flippers
+flipper_length = 80
+flipper_angle_left = -30
+flipper_angle_right = 30
+flipper_speed = 8
+flipper_y = HEIGHT - 80
+flipper_pivot_left = (WIDTH // 2 - 60, flipper_y)
+flipper_pivot_right = (WIDTH // 2 + 60, flipper_y)
+flipper_active_left = False
+flipper_active_right = False
+
+# Bumpers (x, y, radius, points)
+bumpers = [
+    (WIDTH // 2, HEIGHT // 2, 20, 100),
+    (WIDTH // 2 - 100, HEIGHT // 2 - 100, 25, 150),
+    (WIDTH // 2 + 100, HEIGHT // 2 - 100, 25, 150)
+]
+
+score = 0
+font = pygame.font.SysFont(None, 36)
+
+def draw_flipper(pivot, angle, color):
+    x1, y1 = pivot
+    rad = math.radians(angle)
+    x2 = x1 + math.cos(rad) * flipper_length
+    y2 = y1 + math.sin(rad) * flipper_length
+    pygame.draw.line(screen, color, pivot, (x2, y2), 10)
+    return (x2, y2)
+
+def reset_ball():
+    global ball_pos, ball_vel
+    ball_pos = [WIDTH // 2, HEIGHT // 4]
+    ball_vel = [random.uniform(-2, 2), 0]
+
+reset_ball()
+
+running = True
+while running:
+    dt = clock.tick(FPS) / 1000
+
+    # --- Events ---
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                flipper_active_left = True
+            elif event.key == pygame.K_RIGHT:
+                flipper_active_right = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                flipper_active_left = False
+            elif event.key == pygame.K_RIGHT:
+                flipper_active_right = False
+
+    # --- Physics ---
+    ball_vel[1] += GRAVITY
+    ball_vel[0] *= FRICTION
+    ball_vel[1] *= FRICTION
+    ball_pos[0] += ball_vel[0]
+    ball_pos[1] += ball_vel[1]
+
+    # Wall collisions
+    if ball_pos[0] - ball_radius < 0:
+        ball_pos[0] = ball_radius
+        ball_vel[0] *= -1
+    if ball_pos[0] + ball_radius > WIDTH:
+        ball_pos[0] = WIDTH - ball_radius
+        ball_vel[0] *= -1
+    if ball_pos[1] - ball_radius < 0:
+        ball_pos[1] = ball_radius
+        ball_vel[1] *= -1
+
+    # Bottom - lose ball
+    if ball_pos[1] - ball_radius > HEIGHT:
+        reset_ball()
+
+    # Flipper control
+    if flipper_active_left:
+        flipper_angle_left = min(30, flipper_angle_left + flipper_speed)
+    else:
+        flipper_angle_left = max(-30, flipper_angle_left - flipper_speed)
+    if flipper_active_right:
+        flipper_angle_right = max(-30, flipper_angle_right - flipper_speed)
+    else:
+        flipper_angle_right = min(30, flipper_angle_right + flipper_speed)
+
+    # Flipper collision (simple)
+    left_end = draw_flipper(flipper_pivot_left, flipper_angle_left, GREEN)
+    right_end = draw_flipper(flipper_pivot_right, flipper_angle_right, GREEN)
+
+    for pivot, end, active in [
+        (flipper_pivot_left, left_end, flipper_active_left),
+        (flipper_pivot_right, right_end, flipper_active_right)
+    ]:
+        px, py = pivot
+        ex, ey = end
+        # Closest point on flipper to ball
+        dx, dy = ex - px, ey - py
+        t = ((ball_pos[0] - px) * dx + (ball_pos[1] - py) * dy) / (dx * dx + dy * dy)
+        t = max(0, min(1, t))
+        closest_x = px + t * dx
+        closest_y = py + t * dy
+        dist = math.hypot(ball_pos[0] - closest_x, ball_pos[1] - closest_y)
+        if dist < ball_radius + 5:
+            nx, ny = ball_pos[0] - closest_x, ball_pos[1] - closest_y
+            length = math.hypot(nx, ny) or 1
+            nx, ny = nx / length, ny / length
+            ball_vel[0] += nx * (10 if active else 5)
+            ball_vel[1] += ny * (10 if active else 5)
+
+    # Bumper collisions
+    for bx, by, br, points in bumpers:
+        dist = math.hypot(ball_pos[0] - bx, ball_pos[1] - by)
+        if dist < ball_radius + br:
+            nx, ny = (ball_pos[0] - bx) / dist, (ball_pos[1] - by) / dist
+            ball_vel[0] += nx * 5
+            ball_vel[1] += ny * 5
+            score += points
+
+    # --- Draw ---
+    screen.fill(BLACK)
+    pygame.draw.circle(screen, YELLOW, (int(ball_pos[0]), int(ball_pos[1])), ball_radius)
+
+    # Draw flippers
+    left_end = draw_flipper(flipper_pivot_left, flipper_angle_left, GREEN)
+    right_end = draw_flipper(flipper_pivot_right, flipper_angle_right, GREEN)
+
+    # Draw bumpers
+    for bx, by, br, points in bumpers:
+        pygame.draw.circle(screen, RED, (bx, by), br)
+        pygame.draw.circle(screen, WHITE, (bx, by), br, 2)
+
+    # Score
+    score_text = font.render(f"Score: {score}", True, WHITE)
+    screen.blit(score_text, (10, 10))
+
+    pygame.display.flip()
+
+pygame.quit()
+
+```
+
+30. FAIL: AttributeError: 'panda3d.core.GraphicsWindow' object has no attribute 'setTitle'. SRC:
+```
+# simple_fps.py
+# Simple Panda3D FPS: walk, jump, shoot cube-monsters.
+# Requires: panda3d (Python3). Run: python simple_fps.py
+
+from direct.showbase.ShowBase import ShowBase
+from panda3d.core import WindowProperties, Vec3, CollisionTraverser, CollisionNode
+from panda3d.core import CollisionHandlerQueue, CollisionRay, BitMask32, NodePath
+from panda3d.core import KeyboardButton, CollisionSphere
+from panda3d.core import AmbientLight, DirectionalLight
+from direct.task import Task
+import sys
+import random
+import math
+import time
+
+# Configurable gameplay constants
+WALK_SPEED = 7.0
+SPRINT_MULT = 1.8
+JUMP_SPEED = 8.0
+GRAVITY = 20.0
+MOUSE_SENS = 0.12
+FIRE_COOLDOWN = 0.18
+BULLET_SPEED = 45.0
+MONSTER_SPEED = 2.0
+
+class SimpleFPS(ShowBase):
+    def __init__(self):
+        ShowBase.__init__(self)
+        self.setWindowTitle("Simple Panda3D FPS Demo")
+
+        # --- basic window / mouse setup ---
+        self.disableMouse()  # we'll control the camera. See Panda3D manual about default camera driver. :contentReference[oaicite:1]{index=1}
+        props = WindowProperties()
+        props.setCursorHidden(True)
+        props.setMouseMode(WindowProperties.M_relative)  # relative mouse mode where supported
+        self.win.requestProperties(props)
+
+        # Camera/player node
+        self.player = render.attachNewNode("player")
+        self.camera.reparentTo(self.player)
+        self.camera.setPos(0, 0, 1.5)  # eye height
+
+        # movement state
+        self.key_map = {"forward": False, "back": False, "left": False, "right": False, "jump": False, "sprint": False}
+        self.accept("w", self.set_key, ["forward", True])
+        self.accept("w-up", self.set_key, ["forward", False])
+        self.accept("s", self.set_key, ["back", True])
+        self.accept("s-up", self.set_key, ["back", False])
+        self.accept("a", self.set_key, ["left", True])
+        self.accept("a-up", self.set_key, ["left", False])
+        self.accept("d", self.set_key, ["right", True])
+        self.accept("d-up", self.set_key, ["right", False])
+        self.accept("space", self.set_key, ["jump", True])
+        self.accept("space-up", self.set_key, ["jump", False])
+        self.accept("shift", self.set_key, ["sprint", True])
+        self.accept("shift-up", self.set_key, ["sprint", False])
+        self.accept("escape", sys.exit)
+
+        # mouse-fire
+        self.accept("mouse1", self.fire)
+
+        # --- scene: a simple floor and some cubes as walls/landmarks ---
+        # Flat floor: we'll use a card (flattened plane)
+        cm = self.loader.loadModel("models/misc/rgbCube")  # small cube model included in Panda3D installs; we'll scale/flatten it
+        self.floor = cm.copyTo(render)
+        self.floor.setScale(50, 50, 0.1)
+        self.floor.setPos(0, 50, -0.1)
+        self.floor.setColor(0.3, 0.3, 0.35, 1)
+
+        # Add a few colored boxes as simple level geometry
+        for i in range(10):
+            b = cm.copyTo(render)
+            b.setScale(1.5, 1.5, 2.5)
+            x = random.uniform(-20, 20)
+            y = random.uniform(-30, 30)
+            b.setPos(x, y, 1.25)
+            b.setColor(random.random(), random.random(), random.random(), 1)
+
+        # lighting so cubes are visible
+        al = AmbientLight("al")
+        al.setColor((0.5, 0.5, 0.5, 1))
+        render.setLight(render.attachNewNode(al))
+        dl = DirectionalLight("dl")
+        dl.setDirection(Vec3(-1, -1, -2))
+        dl.setColor((0.8, 0.8, 0.75, 1))
+        render.setLight(render.attachNewNode(dl))
+
+        # --- ground detection using a downward collision ray ---
+        # standard approach: cast a ray downwards each frame to detect ground (jump logic). See Panda3D forum/tutorial examples. :contentReference[oaicite:2]{index=2}
+        self.cTrav = CollisionTraverser()
+        self.groundHandler = CollisionHandlerQueue()
+        self.groundRay = CollisionRay()
+        self.groundRay.setOrigin(0, 0, 2.0)
+        self.groundRay.setDirection(0, 0, -1)
+        groundNode = CollisionNode('playerRay')
+        groundNode.addSolid(self.groundRay)
+        groundNode.setFromCollideMask(BitMask32.bit(0))
+        groundNode.setIntoCollideMask(BitMask32.allOff())
+        self.groundNp = self.player.attachNewNode(groundNode)
+        self.cTrav.addCollider(self.groundNp, self.groundHandler)
+
+        # make the floor and boxes into into-collide for that ray by adding collision solids:
+        # Approach: attach a CollisionSphere slightly under floor for simplicity — but better approach is proper CollisionSolids per geometry.
+        # For simplicity here, create a large invisible collision plane (we fake it using a big collision node).
+        from panda3d.core import CollisionPlane, Plane, Point3, Vec3 as V3
+        plane = CollisionPlane(Plane(V3(0, 0, 1), Point3(0, 0, 0)))
+        pnode = CollisionNode('groundPlane')
+        pnode.addSolid(plane)
+        pnode.setIntoCollideMask(BitMask32.bit(0))
+        render.attachNewNode(pnode)
+
+        # --- physics variables ---
+        self.velocity = Vec3(0, 0, 0)
+        self.is_on_ground = False
+
+        # --- bullets and monsters management ---
+        self.last_fire = 0.0
+        self.bullets = []
+        self.monsters = []
+        self.spawn_monsters(8)
+
+        # update task
+        self.taskMgr.add(self.update, "update")
+
+        # confine mouse to window and reset pointer tracking
+        self.win.movePointer(0, int(self.win.getProperties().getXSize() / 2),
+                             int(self.win.getProperties().getYSize() / 2))
+
+    def setWindowTitle(self, title):  # fallback if setWindowTitle unavailable
+        try:
+            base.win.setTitle(title)
+        except Exception:
+            pass
+
+    def setWindowTitle(self, title):
+        self.win.setTitle(title)
+
+    def set_key(self, key, value):
+        self.key_map[key] = value
+
+    def spawn_monsters(self, n):
+        model = self.loader.loadModel("models/misc/rgbCube")
+        for i in range(n):
+            m = model.copyTo(render)
+            m.setScale(1.0, 1.0, 1.75)
+            x = random.uniform(-30, 30)
+            y = random.uniform(-30, 30)
+            m.setPos(x, y, 0.9)
+            m.setColor(0.8, 0.2, 0.2, 1)
+            # simple health and id
+            m.setPythonTag("hp", 3)
+            self.monsters.append(m)
+
+    def fire(self):
+        now = time.time()
+        if now - self.last_fire < FIRE_COOLDOWN:
+            return
+        self.last_fire = now
+        # spawn a bullet as a small cube
+        bm = self.loader.loadModel("models/misc/rgbCube")
+        bullet = bm.copyTo(render)
+        bullet.setScale(0.12, 0.12, 0.12)
+        # start at camera position
+        cam_world = self.camera.getPos(render)
+        forward = self.camera.getQuat(render).getForward()
+        bullet.setPos(cam_world + forward * 1.2)  # just in front of camera
+        bullet.setColor(1.0, 1.0, 0.2, 1)
+        # set velocity vector
+        bullet.setPythonTag("vel", forward * BULLET_SPEED)
+        bullet.setPythonTag("ttl", 3.0)  # seconds to live
+        self.bullets.append(bullet)
+
+    def update(self, task):
+        dt = globalClock.getDt()
+        if dt > 0.1: dt = 0.1
+
+        # ----- mouse look -----
+        if self.win.movePointer:  # relative mode
+            md = self.win.getPointer(0)
+            cx = md.getX()
+            cy = md.getY()
+            # in relative mode the pointer is usually centered; instead ask relative movement
+            # Many platforms with M_relative provide delta via getRawMouseData; fallback: use getPointer and recenter
+            # Here we use a simple approach: recenter each frame and compute delta from center
+            wx = int(self.win.getProperties().getXSize() / 2)
+            wy = int(self.win.getProperties().getYSize() / 2)
+            delta_x = cx - wx
+            delta_y = cy - wy
+            # apply rotation
+            h = self.player.getH() - delta_x * MOUSE_SENS
+            p = self.camera.getP() - delta_y * MOUSE_SENS
+            p = max(-89, min(89, p))
+            self.player.setH(h)
+            self.camera.setP(p)
+            # recenter
+            self.win.movePointer(0, wx, wy)
+
+        # ----- movement -----
+        move_dir = Vec3(0, 0, 0)
+        if self.key_map["forward"]:
+            move_dir.y += 1
+        if self.key_map["back"]:
+            move_dir.y -= 1
+        if self.key_map["left"]:
+            move_dir.x -= 1
+        if self.key_map["right"]:
+            move_dir.x += 1
+        if move_dir.length() > 0:
+            move_dir.normalize()
+        speed = WALK_SPEED * (SPRINT_MULT if self.key_map["sprint"] else 1.0)
+
+        # local-space movement (player orientation)
+        heading = self.player.getH(render)
+        # convert move_dir from local to world
+        mat = self.player.getMat(render)
+        forward = mat.getRow3(1)
+        right = mat.getRow3(0)
+        desired = (right * move_dir.x + forward * move_dir.y) * speed
+
+        # gravity & jumping
+        # detect ground by casting the downward ray: run traverser and inspect collisions
+        self.cTrav.traverse(render)
+        self.is_on_ground = False
+        if self.groundHandler.getNumEntries() > 0:
+            self.groundHandler.sortEntries()
+            entry = self.groundHandler.getEntry(0)
+            z = entry.getSurfacePoint(render).getZ()
+            # if very close to ground (within a small epsilon), we are on ground
+            player_z = self.player.getZ(render)
+            if (player_z - z) <= 0.35:
+                self.is_on_ground = True
+                # snap to ground to prevent sliding accumulation
+                self.player.setZ(z)
+
+        if self.key_map["jump"] and self.is_on_ground:
+            self.velocity.z = JUMP_SPEED
+        # apply gravity
+        self.velocity.z -= GRAVITY * dt
+
+        # combine horizontal velocity
+        self.velocity.x = desired.x
+        self.velocity.y = desired.y
+
+        # integrate position
+        self.player.setPos(self.player.getPos() + self.velocity * dt)
+
+        # simple floor clamp so we don't fall forever through if ground detection fails
+        if self.player.getZ() < -50:
+            self.player.setPos(0, 0, 5)
+            self.velocity = Vec3(0, 0, 0)
+
+        # ----- bullets update: move and TTL, check hits -----
+        for b in self.bullets[:]:
+            vel = b.getPythonTag("vel")
+            ttl = b.getPythonTag("ttl") - dt
+            b.setPythonTag("ttl", ttl)
+            b.setPos(b.getPos() + vel * dt)
+            # check monster collisions with simple distance test
+            for m in self.monsters[:]:
+                if (b.getPos() - m.getPos()).length() < 0.9:
+                    # hit!
+                    hp = m.getPythonTag("hp") - 1
+                    m.setPythonTag("hp", hp)
+                    if hp <= 0:
+                        try:
+                            self.monsters.remove(m)
+                            m.removeNode()
+                        except Exception:
+                            pass
+                    # remove bullet
+                    try:
+                        self.bullets.remove(b)
+                        b.removeNode()
+                    except Exception:
+                        pass
+                    break
+            if ttl <= 0:
+                if b in self.bullets:
+                    self.bullets.remove(b)
+                    b.removeNode()
+
+        # ----- monsters AI: simple seek player -----
+        for m in self.monsters:
+            dir_to_player = (self.player.getPos(render) - m.getPos(render))
+            dir_to_player.z = 0
+            if dir_to_player.length() > 0.01:
+                dir_to_player.normalize()
+                m.setPos(m.getPos() + dir_to_player * MONSTER_SPEED * dt)
+            # if close to player, apply 'damage' (here we just push player back)
+            if (m.getPos() - self.player.getPos()).length() < 1.2:
+                # simple knockback
+                push = (self.player.getPos() - m.getPos())
+                push.setZ(0)
+                if push.length() > 0:
+                    push.normalize()
+                    self.player.setPos(self.player.getPos() + push * 0.5)
+
+        return Task.cont
+
+if __name__ == "__main__":
+    app = SimpleFPS()
+    app.run()
+```
+
+31. FAIL (Did path tracing, No WASD/Jump/Fire like advertised), SRC:
+
+```
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Simple Ray & Path Tracer</title>
+<style>
+  :root { --bg:#111; --panel:#1c1c1c; --accent:#7dd3fc; --muted:#aaa; }
+  body { margin:0; font-family: Inter, Roboto, Arial; background:var(--bg); color:#eee; display:flex; height:100vh; gap:12px; align-items:flex-start; padding:12px; box-sizing:border-box;}
+  .panel { background:var(--panel); padding:12px; border-radius:8px; box-shadow: 0 6px 24px rgba(0,0,0,.6);}
+  #container { display:flex; gap:12px; align-items:flex-start; width:100%; }
+  #canvasWrap { flex:1; display:flex; align-items:center; justify-content:center; }
+  canvas { background:#000; image-rendering: pixelated; border-radius:6px; }
+  .controls { width:300px; max-height:calc(100vh - 24px); overflow:auto; }
+  h1 { margin:0 0 8px 0; font-size:18px; color:var(--accent); }
+  label { display:block; font-size:13px; margin-top:8px; color:var(--muted); }
+  input[type=range] { width:100%; }
+  .row { display:flex; gap:8px; align-items:center; }
+  button { margin-top:10px; width:100%; padding:8px; background:var(--accent); color:#022; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+  small { color:var(--muted); }
+  .stat { font-family: monospace; color:#ddd; margin-top:6px; }
+  .modeBtn { width:48%; padding:6px; border-radius:6px; border:none; cursor:pointer; background:#222; color:#ddd; }
+  .modeBtn.active { background:var(--accent); color:#022; }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="canvasWrap" class="panel">
+    <canvas id="canvas" width="640" height="384"></canvas>
+  </div>
+
+  <div class="controls panel">
+    <h1>Mini Tracer</h1>
+    <div class="row">
+      <button id="startBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <label>Mode</label>
+    <div class="row">
+      <button class="modeBtn active" id="modeRay">Ray Trace</button>
+      <button class="modeBtn" id="modePath">Path Trace</button>
+    </div>
+
+    <label>Resolution scale: <small id="resLabel">1.0</small></label>
+    <input id="resRange" type="range" min="0.25" max="1" step="0.25" value="1">
+
+    <label>Samples per pixel (progressive for path): <small id="sppLabel">1</small></label>
+    <input id="sppRange" type="range" min="1" max="512" step="1" value="1">
+
+    <label>Max bounces (path): <small id="bouncesLabel">3</small></label>
+    <input id="bounceRange" type="range" min="1" max="8" step="1" value="3">
+
+    <label>FOV (deg)</label>
+    <input id="fovRange" type="range" min="40" max="90" step="1" value="60">
+
+    <label>Gamma</label>
+    <input id="gammaRange" type="range" min="1" max="3" step="0.1" value="2.2">
+
+    <label><input type="checkbox" id="antialias" checked> Antialias (subpixel jitter)</label>
+    <div class="stat" id="stats">Samples: 0 • Time: 0s</div>
+
+    <hr style="opacity:.1;margin:10px 0;">
+    <small>Controls: WASD move, mouse to look (click canvas to capture), Space to jump, LMB to fire (path tracer: render samples progressive).</small>
+  </div>
+</div>
+
+<script>
+/*
+  Simple Ray & Path Tracer (single-file)
+  - Ray Trace: direct lighting, shadows, reflections
+  - Path Trace: Monte Carlo, diffuse sampling, multiple bounces, progressive accumulation
+  No external libs. Keep it simple and educational.
+*/
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d', {alpha:false});
+let W = canvas.width, H = canvas.height;
+
+const startBtn = document.getElementById('startBtn');
+const resetBtn = document.getElementById('resetBtn');
+const modeRay = document.getElementById('modeRay');
+const modePath = document.getElementById('modePath');
+const resRange = document.getElementById('resRange');
+const sppRange = document.getElementById('sppRange');
+const bounceRange = document.getElementById('bounceRange');
+const fovRange = document.getElementById('fovRange');
+const gammaRange = document.getElementById('gammaRange');
+const antialias = document.getElementById('antialias');
+const stats = document.getElementById('stats');
+const resLabel = document.getElementById('resLabel');
+const sppLabel = document.getElementById('sppLabel');
+const bouncesLabel = document.getElementById('bouncesLabel');
+
+let running = false;
+let mode = 'ray'; // 'ray' or 'path'
+
+// Simple camera / scene setup
+let cam = {
+  pos: {x:0,y:-6,z:1.2},
+  target: {x:0,y:0,z:1},
+  yaw: 0,
+  pitch: 0,
+  fov: 60
+};
+
+// scene objects: spheres and plane
+class Sphere {
+  constructor(x,y,z,r, color, emission=0, material='diffuse') {
+    this.pos = {x,y,z}; this.r = r; this.color = color; this.emission = emission; this.material = material;
+  }
+}
+let scene = [];
+function makeScene() {
+  scene = [];
+  // ground plane is handled separately by ray-sphere-plane intersection
+  // big spheres: color, some mirror, some emissive
+  scene.push(new Sphere(-1.5, 1.5, 0.7, 0.7, {r:0.8,g:0.1,b:0.1}, 0, 'diffuse'));
+  scene.push(new Sphere(1.2, 0.5, 0.6, 0.6, {r:0.1,g:0.1,b:0.8}, 0, 'specular'));
+  scene.push(new Sphere(0.2, -0.5, 0.4, 0.4, {r:0.8,g:0.8,b:0.1}, 0, 'diffuse'));
+  // light (emissive)
+  scene.push(new Sphere(-0.5, -1.8, 4.0, 0.5, {r:1,g:1,b:1}, 6.0, 'diffuse'));
+}
+
+// utility helpers
+function addVec(a,b){return {x:a.x+b.x,y:a.y+b.y,z:a.z+b.z};}
+function subVec(a,b){return {x:a.x-b.x,y:a.y-b.y,z:a.z-b.z};}
+function mulVec(a,s){return {x:a.x*s,y:a.y*s,z:a.z*s};}
+function dot(a,b){return a.x*b.x + a.y*b.y + a.z*b.z;}
+function len(v){return Math.sqrt(dot(v,v));}
+function normalize(v){ let L=len(v); return L===0?{x:0,y:0,z:0}:mulVec(v,1/L); }
+function reflect(I,N){ return subVec(I, mulVec(N, 2*dot(I,N))); }
+function clamp01(x){ return x<0?0:(x>1?1:x); }
+
+// ray-sphere intersection
+function intersectSphere(ro, rd, sphere) {
+  const oc = subVec(ro, sphere.pos);
+  const a = dot(rd, rd);
+  const b = 2*dot(oc, rd);
+  const c = dot(oc, oc) - sphere.r*sphere.r;
+  const disc = b*b - 4*a*c;
+  if (disc < 0) return null;
+  const sq = Math.sqrt(disc);
+  const t0 = (-b - sq) / (2*a);
+  const t1 = (-b + sq) / (2*a);
+  let t = t0;
+  if (t < 1e-4) t = t1;
+  if (t < 1e-4) return null;
+  const pos = addVec(ro, mulVec(rd, t));
+  const n = normalize(subVec(pos, sphere.pos));
+  return {t, pos, n, sphere};
+}
+
+// intersect with plane y = ? (we'll use z=0 plane as ground)
+function intersectPlane(ro, rd) {
+  // plane z = 0, normal (0,0,1)
+  const n = {x:0,y:0,z:1};
+  if (Math.abs(rd.z) < 1e-6) return null;
+  const t = - (ro.z) / rd.z;
+  if (t < 1e-4) return null;
+  const pos = addVec(ro, mulVec(rd,t));
+  return {t, pos, n, plane:true};
+}
+
+// pick nearest hit between spheres and plane
+function sceneIntersect(ro, rd) {
+  let hit = null;
+  // spheres
+  for (let s of scene) {
+    const r = intersectSphere(ro, rd, s);
+    if (r && (!hit || r.t < hit.t)) hit = r;
+  }
+  // plane (ground), only if it is nearer
+  const p = intersectPlane(ro, rd);
+  if (p && (!hit || p.t < hit.t)) {
+    // plane color is checkerboard
+    hit = p;
+    hit.color = (((Math.floor(p.pos.x) + Math.floor(p.pos.y)) & 1) === 0) ? {r:0.9,g:0.9,b:0.9} : {r:0.2,g:0.2,b:0.2};
+    hit.emission = 0;
+    hit.material = 'diffuse';
+  }
+  return hit;
+}
+
+// simple direct ray tracer: one bounce reflections, shadows, and emitter sampling
+function traceRay(ro, rd, depth=0) {
+  const hit = sceneIntersect(ro, rd);
+  if (!hit) {
+    // sky
+    const t = 0.5*(rd.z + 1.0);
+    return {r: (1-t)*0.6 + t*0.8, g:(1-t)*0.7 + t*0.9, b:(1-t)*1.0 + t*1.0};
+  }
+  // emissive sphere -> return its emission scaled by color
+  if (hit.sphere && hit.sphere.emission > 0) {
+    return {r: hit.sphere.emission * (hit.sphere.color.r||1),
+            g: hit.sphere.emission * (hit.sphere.color.g||1),
+            b: hit.sphere.emission * (hit.sphere.color.b||1)};
+  }
+  // compute local color: for ray tracer we'll do direct lighting from emissive spheres
+  // sample each emissive sphere once (simple)
+  let baseColor = hit.sphere ? hit.sphere.color : hit.color;
+  let accum = {r:0,g:0,b:0};
+  // ambient
+  accum.r += 0.03 * baseColor.r;
+  accum.g += 0.03 * baseColor.g;
+  accum.b += 0.03 * baseColor.b;
+
+  // reflectivity for specular
+  if (hit.sphere && hit.sphere.material === 'specular' && depth < 2) {
+    const refl = reflect(rd, hit.n);
+    const col = traceRay(addVec(hit.pos, mulVec(hit.n, 1e-4)), normalize(refl), depth+1);
+    return col; // mirror - ignore base color for simplicity
+  }
+
+  // direct light from emissive spheres
+  for (let s of scene) {
+    if (!s.emission) continue;
+    // sample toward light center (very approximate)
+    const toLight = normalize(subVec(s.pos, hit.pos));
+    // shadow test
+    const shadow = sceneIntersect(addVec(hit.pos, mulVec(hit.n, 1e-4)), toLight);
+    const lightDist = len(subVec(s.pos, hit.pos));
+    if (!shadow || shadow.t > lightDist - 1e-4) {
+      // lambert
+      const lam = Math.max(0, dot(hit.n, toLight));
+      const att = s.emission / (lightDist*lightDist + 0.001);
+      accum.r += baseColor.r * s.color.r * lam * att;
+      accum.g += baseColor.g * s.color.g * lam * att;
+      accum.b += baseColor.b * s.color.b * lam * att;
+    }
+  }
+
+  // small reflection for glossy diffuse
+  if (depth < 2) {
+    const refl = reflect(rd, hit.n);
+    const col = traceRay(addVec(hit.pos, mulVec(hit.n, 1e-4)), normalize(refl), depth+1);
+    accum.r += 0.2 * col.r;
+    accum.g += 0.2 * col.g;
+    accum.b += 0.2 * col.b;
+  }
+
+  // modulate by base color
+  accum.r = accum.r * baseColor.r;
+  accum.g = accum.g * baseColor.g;
+  accum.b = accum.b * baseColor.b;
+
+  return accum;
+}
+
+// Path tracing: returns radiance by Monte Carlo sampling
+function pathTrace(ro, rd, maxBounces) {
+  let radiance = {r:0,g:0,b:0};
+  let throughput = {r:1,g:1,b:1};
+  let origin = ro;
+  let dir = rd;
+
+  for (let bounce=0; bounce<maxBounces; bounce++) {
+    const hit = sceneIntersect(origin, dir);
+    if (!hit) {
+      // environment (black-ish)
+      radiance.r += throughput.r * 0.0;
+      radiance.g += throughput.g * 0.0;
+      radiance.b += throughput.b * 0.0;
+      break;
+    }
+    // emissive
+    if (hit.sphere && hit.sphere.emission > 0) {
+      radiance.r += throughput.r * hit.sphere.emission * (hit.sphere.color.r||1);
+      radiance.g += throughput.g * hit.sphere.emission * (hit.sphere.color.g||1);
+      radiance.b += throughput.b * hit.sphere.emission * (hit.sphere.color.b||1);
+      break; // assume light is small, stop on hitting light
+    }
+    // HANDLE MATERIALS: diffuse or specular
+    const mat = (hit.sphere && hit.sphere.material) ? hit.sphere.material : hit.material || 'diffuse';
+    if (mat === 'specular') {
+      // perfect mirror
+      dir = reflect(dir, hit.n);
+      origin = addVec(hit.pos, mulVec(hit.n, 1e-4));
+      // throughput unchanged for mirror
+      continue;
+    } else {
+      // diffuse: sample cosine-weighted hemisphere
+      const sample = cosineSampleHemisphere(hit.n);
+      dir = sample;
+      origin = addVec(hit.pos, mulVec(hit.n, 1e-4));
+      // assume albedo = base color
+      const base = hit.sphere ? hit.sphere.color : hit.color;
+      // BRDF for diffuse is albedo / pi, but we account for pdf in sampling: pdf = cos/PI => multiply by cos/pdf = PI
+      // throughput *= albedo
+      throughput.r *= base.r;
+      throughput.g *= base.g;
+      throughput.b *= base.b;
+      // Russian roulette termination to avoid infinite loops
+      const p = Math.max(throughput.r, throughput.g, throughput.b);
+      if (bounce > 2) {
+        if (Math.random() > p) break;
+        throughput.r /= p; throughput.g /= p; throughput.b /= p;
+      }
+    }
+  }
+  return radiance;
+}
+
+// cosine-weighted hemisphere sampling oriented by normal n
+function cosineSampleHemisphere(n) {
+  // sample in tangent space
+  const u1 = Math.random(), u2 = Math.random();
+  const r = Math.sqrt(u1);
+  const theta = 2 * Math.PI * u2;
+  const x = r * Math.cos(theta), y = r * Math.sin(theta), z = Math.sqrt(Math.max(0, 1-u1));
+  // build orthonormal basis (n, t, b)
+  let up = Math.abs(n.z) < 0.999 ? {x:0,y:0,z:1} : {x:1,y:0,z:0};
+  let t = normalize(cross(up, n));
+  let b = cross(n, t);
+  // transform
+  return normalize(addVec(addVec(mulVec(t, x), mulVec(b,y)), mulVec(n,z)));
+}
+
+function cross(a,b){ return {x: a.y*b.z - a.z*b.y, y: a.z*b.x - a.x*b.z, z: a.x*b.y - a.y*b.x}; }
+
+// Rendering & progressive accumulation
+let accumulation = null; // Float32Array for accumulative color
+let frameCount = 0;
+let startTime = 0;
+
+function resetAccum() {
+  const sw = Math.max(1, Math.floor(W * parseFloat(resRange.value)));
+  const sh = Math.max(1, Math.floor(H * parseFloat(resRange.value)));
+  accumulation = new Float32Array(sw * sh * 3);
+  frameCount = 0;
+}
+
+// render one sample (either ray or path)
+function renderSample() {
+  const scale = parseFloat(resRange.value);
+  const sw = Math.max(1, Math.floor(W * scale));
+  const sh = Math.max(1, Math.floor(H * scale));
+  const spp = parseInt(sppRange.value, 10);
+  const bounces = parseInt(bounceRange.value, 10);
+  const gamma = parseFloat(gammaRange.value);
+  const aa = antialias.checked;
+  const fov = parseFloat(fovRange.value);
+
+  if (!accumulation || accumulation.length !== sw*sh*3) resetAccum();
+
+  // camera basis
+  const aspect = sw / sh;
+  const fovRad = (fov * Math.PI / 180);
+  const halfH = Math.tan(fovRad*0.5);
+  const halfW = halfH * aspect;
+
+  // camera orientation from cam.yaw/cam.pitch
+  const yaw = cam.yaw, pitch = cam.pitch;
+  const cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const cp = Math.cos(pitch), sp = Math.sin(pitch);
+  // camera forward vector (in world)
+  const forward = normalize({x: sy*cp, y: cy*cp, z: sp});
+  const right = normalize({x: cy, y: -sy, z: 0});
+  const up = cross(right, forward);
+
+  // For each pixel we do 1 sample per renderSample call (progressive)
+  for (let y=0; y<sh; y++) {
+    for (let x=0; x<sw; x++) {
+      // subpixel jitter for AA / progressive
+      let sx = x + (aa ? Math.random() : 0.5);
+      let syv = y + (aa ? Math.random() : 0.5);
+      // NDC [-1..1]
+      const nx = (2*(sx+0.5)/sw - 1) * halfW;
+      const ny = (1 - 2*(syv+0.5)/sh) * halfH;
+      // direction in world space
+      let dir = normalize(addVec(addVec(mulVec(right, nx), mulVec(up, ny)), forward));
+      const ro = cam.pos;
+      let color;
+      if (mode === 'ray') {
+        color = traceRay(ro, dir, 0);
+      } else {
+        color = pathTrace(ro, dir, bounces);
+      }
+      const idx = (y*sw + x)*3;
+      accumulation[idx+0] += color.r;
+      accumulation[idx+1] += color.g;
+      accumulation[idx+2] += color.b;
+    }
+  }
+
+  frameCount++;
+  // draw to visible canvas (we upscale from sw/sh to W/H)
+  const img = ctx.createImageData(W, H);
+  // nearest-neighbor upscale for speed
+  for (let yy=0; yy<H; yy++) {
+    for (let xx=0; xx<W; xx++) {
+      const sx = Math.floor(xx * (sw / W));
+      const syy = Math.floor(yy * (sh / H));
+      const idx = (syy*sw + sx)*3;
+      const r = accumulation[idx+0] / frameCount;
+      const g = accumulation[idx+1] / frameCount;
+      const b = accumulation[idx+2] / frameCount;
+      // apply simple exposure/gamma
+      const toGamma = v => Math.pow(clamp01(v), 1/gamma);
+      const ir = Math.max(0, Math.min(255, Math.floor(toGamma(r) * 255)));
+      const ig = Math.max(0, Math.min(255, Math.floor(toGamma(g) * 255)));
+      const ib = Math.max(0, Math.min(255, Math.floor(toGamma(b) * 255)));
+      const off = (yy*W + xx) * 4;
+      img.data[off+0] = ir;
+      img.data[off+1] = ig;
+      img.data[off+2] = ib;
+      img.data[off+3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+
+  const elapsed = ((performance.now() - startTime)/1000).toFixed(1);
+  stats.textContent = `Samples: ${frameCount} • Time: ${elapsed}s`;
+}
+
+// animation loop for progressive path tracing
+let raf = null;
+function loop() {
+  if (!running) return;
+  // render one progressive sample per frame (you can increase to more for faster accumulation)
+  renderSample();
+  raf = requestAnimationFrame(loop);
+}
+
+function start() {
+  if (running) return;
+  running = true;
+  startBtn.textContent = 'Running...';
+  startBtn.disabled = true;
+  resetAccum();
+  startTime = performance.now();
+  raf = requestAnimationFrame(loop);
+}
+
+function stop() {
+  running = false;
+  startBtn.textContent = 'Start';
+  startBtn.disabled = false;
+  if (raf) cancelAnimationFrame(raf);
+}
+
+startBtn.onclick = () => {
+  if (!running) start();
+};
+resetBtn.onclick = () => {
+  stop();
+  resetAccum();
+  renderSample();
+};
+
+modeRay.onclick = () => { mode = 'ray'; modeRay.classList.add('active'); modePath.classList.remove('active'); resetAccum(); renderSample(); };
+modePath.onclick = () => { mode = 'path'; modeRay.classList.remove('active'); modePath.classList.add('active'); resetAccum(); renderSample(); };
+
+resRange.oninput = () => { resLabel.textContent = resRange.value; resetAccum(); renderSample(); };
+sppRange.oninput = () => { sppLabel.textContent = sppRange.value; resetAccum(); renderSample(); };
+bounceRange.oninput = () => { bouncesLabel.textContent = bounceRange.value; resetAccum(); renderSample(); };
+fovRange.oninput = () => { cam.fov = parseFloat(fovRange.value); resetAccum(); renderSample(); };
+gammaRange.oninput = () => { resetAccum(); renderSample(); };
+
+canvas.onclick = () => {
+  canvas.requestPointerLock?.();
+};
+
+// Basic controls (optional, nonessential): rotate camera with mouse movement while pointer locked
+document.addEventListener('pointerlockchange', ()=> {
+  // nothing special
+});
+document.addEventListener('mousemove', (e) => {
+  if (document.pointerLockElement === canvas) {
+    cam.yaw -= e.movementX * 0.0025;
+    cam.pitch -= e.movementY * 0.0025;
+    cam.pitch = Math.max(-1.4, Math.min(1.4, cam.pitch));
+    cam.pos.x = Math.sin(cam.yaw) * -6;
+    cam.pos.y = Math.cos(cam.yaw) * -6;
+    cam.pos.z = 1.2 + Math.sin(cam.pitch)*0.5;
+    resetAccum();
+  }
+});
+
+// initialize scene and render initial sample
+makeScene();
+resetAccum();
+renderSample();
+
+</script>
+</body>
+</html>
+```
