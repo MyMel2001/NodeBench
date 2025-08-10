@@ -1,0 +1,843 @@
+# NodeBench - OpenAI GPT 5
+
+1. Pass
+2. Pass
+3. Fail (ValueError: too many values to unpack (expected 2))
+4. Pass
+5. Pass
+6. Pass
+7. Pass
+8. Pass
+9. Pass
+10. Pass
+11. Pass
+12. Pass
+13. Pass
+14. Pass
+15. Pass
+16. Pass, SRC:
+```
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hello, GPT-5 Thinking mini!</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #071129;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --glass: rgba(255,255,255,0.06);
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --glass-border: rgba(255,255,255,0.06);
+    }
+
+    /* Reset-ish */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: linear-gradient(160deg,var(--bg1) 0%, var(--bg2) 60%);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    /* Container */
+    .card{
+      width: min(960px, 92vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      padding: clamp(24px, 4vw, 48px);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* Subtle moving gradient overlay */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: radial-gradient(closest-side, rgba(124,58,237,0.12), transparent 30%),
+                  radial-gradient(circle at 80% 20%, rgba(6,182,212,0.08), transparent 25%);
+      transform: rotate(12deg);
+      animation: float 8s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    @keyframes float{
+      0%{transform:rotate(12deg) translateY(0)}
+      50%{transform:rotate(12deg) translateY(6%)}
+      100%{transform:rotate(12deg) translateY(0)}
+    }
+
+    /* Heading layout */
+    .headline{
+      display:flex;
+      align-items:center;
+      gap:24px;
+      margin:0 0 12px 0;
+    }
+    .logo{
+      width:84px;
+      height:84px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      box-shadow: 0 6px 20px rgba(12,18,40,0.6), inset 0 -6px 18px rgba(255,255,255,0.06);
+      position:relative;
+    }
+    .logo svg{width:56px;height:56px;filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45));}
+
+    h1{
+      font-weight:700;
+      font-size: clamp(28px, 4.6vw, 42px);
+      line-height:1;
+      letter-spacing:-0.02em;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+    }
+    h1 .small{font-weight:500; font-size: clamp(12px, 1.6vw, 14px); opacity:0.85}
+
+    /* Animated greeting text */
+    .greeting{
+      margin-top: 10px;
+      display:inline-grid;
+      grid-auto-flow:column;
+      gap:8px;
+      align-items:center;
+    }
+
+    .pill{
+      background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding: 10px 16px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      box-shadow: 0 4px 18px rgba(2,6,23,0.45);
+      border: 1px solid rgba(255,255,255,0.04);
+      transform: translateZ(0);
+    }
+
+    .g-text{
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system;
+      font-weight:700;
+      font-size: clamp(16px, 2.4vw, 22px);
+      color: white;
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
+    }
+
+    /* Animated letters */
+    .char{
+      display:inline-block;
+      transform-origin:50% 80%;
+      animation: wave 1200ms ease-in-out infinite;
+      will-change:transform, opacity;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    /* create stagger via CSS variable --i */
+    .char { animation-delay: calc(var(--i) * 70ms); }
+    @keyframes wave{
+      0%{transform: translateY(0) rotateX(0) scale(1); opacity:1}
+      40%{transform: translateY(-6%) rotateX(8deg) scale(1.03); opacity:1}
+      80%{transform: translateY(0) rotateX(0) scale(1); opacity:1}
+      100%{transform: translateY(0) rotateX(0) scale(1); opacity:1}
+    }
+
+    /* small sparkle */
+    .spark{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, transparent 40%);
+      box-shadow: 0 0 12px 3px rgba(124,58,237,0.25), 0 0 20px 6px rgba(6,182,212,0.12);
+      transform: translateY(-8px) scale(0.9);
+      filter: blur(0.15px);
+      opacity:0.95;
+    }
+
+    /* subtext & controls */
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .desc{
+      color:rgba(255,255,255,0.78);
+      font-size:14px;
+    }
+    .actions{display:flex; gap:10px; align-items:center;}
+    .btn{
+      background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      color:white;
+      cursor:pointer;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight:600;
+      font-size:13px;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{opacity:0.9; font-weight:500}
+    .copy{
+      background:transparent;
+      border:none;
+      color:inherit;
+      cursor:pointer;
+    }
+
+    footer.note{
+      margin-top:18px;
+      color:rgba(255,255,255,0.06);
+      font-size:12px;
+      text-align:right;
+    }
+
+    /* accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .card::before, .char { animation: none !important; }
+    }
+
+    /* responsive tweaks */
+    @media (max-width:520px){
+      .headline{gap:14px}
+      .logo{width:60px;height:60px;border-radius:12px}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="greet">
+    <header class="headline" aria-hidden="false">
+      <div class="logo" aria-hidden="true" title="GPT-5 Thinking mini">
+        <!-- Abstract glyph representing 'thinking' & 'spark' -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0.7"/>
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="28" r="18" fill="rgba(255,255,255,0.06)"/>
+          <path d="M16 36c6-10 24-10 28 0" stroke="url(#g1)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <circle cx="42" cy="16" r="3.6" fill="#fff" opacity="0.92"/>
+          <circle cx="22" cy="18" r="2.4" fill="#fff" opacity="0.9"/>
+        </svg>
+      </div>
+
+      <h1 id="greet">
+        <span class="small">A warm, pixel-perfect greeting from</span>
+        <span style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+          <span style="font-size:1.02em;">Hello,</span>
+          <div class="greeting" aria-hidden="false">
+            <div class="pill" role="img" aria-label="Greeting">
+              <div class="g-text" id="greetingText" aria-live="polite"></div>
+              <div class="spark" aria-hidden="true"></div>
+            </div>
+          </div>
+        </span>
+      </h1>
+    </header>
+
+    <section class="meta" aria-label="greeting controls">
+      <p class="desc">A playful, accessible "Hello" crafted with HTML/CSS/JS — no external libraries. Press <strong>Duplicate</strong> to copy the greeting or <strong>Remix</strong> to toggle a sparkle effect.</p>
+
+      <div class="actions">
+        <button class="btn" id="dupBtn" title="Copy greeting to clipboard">📋 Duplicate</button>
+        <button class="btn secondary" id="remixBtn" title="Toggle extra sparkle">✨ Remix</button>
+      </div>
+    </section>
+
+    <footer class="note" aria-hidden="true">
+      Fancy single-file greeting • Built for fun
+    </footer>
+  </main>
+
+  <script>
+    /*
+      Fancy single-file "Hello, GPT-5 Thinking mini!" generator.
+      - Builds the greeting letter-by-letter with a subtle wave animation (staggered via --i).
+      - Duplicate button copies the plain greeting text to clipboard.
+      - Remix toggles an extra randomized sparkle animation (CSS-only fallback respected).
+    */
+
+    // The display name — per instructions, this assistant identifies as:
+    const NAME = "GPT-5 Thinking mini";
+
+    // Build the greeting string: "GPT-5 Thinking mini!" (we replace Hello already in markup)
+    const greetingContainer = document.getElementById('greetingText');
+
+    function buildGreeting(name){
+      // We'll render: "<Name>!"
+      greetingContainer.innerHTML = ""; // clear
+      const text = `${name}!`;
+      // Create animated span per character
+      for(let i=0;i<text.length;i++){
+        const ch = text[i];
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = ch;
+        // Use CSS var for stagger
+        span.style.setProperty('--i', String(i));
+        // Slight color gradient per char using inline style (no external assets)
+        const hue = 200 + (i * 6); // rotate hue for subtle color
+        span.style.color = `hsl(${hue}deg 90% 92%)`;
+        greetingContainer.appendChild(span);
+      }
+    }
+
+    buildGreeting(NAME);
+
+    // Copy plain text (no decoration) to clipboard
+    document.getElementById('dupBtn').addEventListener('click', async () => {
+      const plain = `Hello, ${NAME}!`;
+      try{
+        await navigator.clipboard.writeText(plain);
+        // quick feedback
+        const old = document.getElementById('dupBtn').textContent;
+        document.getElementById('dupBtn').textContent = '✅ Copied';
+        setTimeout(()=> document.getElementById('dupBtn').textContent = old, 1200);
+      }catch(e){
+        // fallback: select and prompt
+        alert('Copy failed — your browser may block clipboard. Text to copy:\\n' + plain);
+      }
+    });
+
+    // Remix: toggles an extra sparkle effect (we'll quickly add tiny transient bursts)
+    const remixBtn = document.getElementById('remixBtn');
+    let remixOn = false;
+
+    remixBtn.addEventListener('click', ()=>{
+      remixOn = !remixOn;
+      remixBtn.textContent = remixOn ? '🌟 Remix ON' : '✨ Remix';
+      if(remixOn) startSparks();
+    });
+
+    // Simple ephemeral spark particles using DOM (keeps everything in one file, lightweight)
+    function startSparks(){
+      // create a few sparks that fade and float in the pill area
+      const container = document.querySelector('.pill');
+      let sparks = 0;
+      const max = 12;
+      const doOne = ()=>{
+        if(!remixOn) return;
+        if(sparks > max) { setTimeout(()=>{ sparks=0; if(remixOn) doOne(); }, 800); return; }
+        sparks++;
+        const s = document.createElement('div');
+        s.setAttribute('aria-hidden','true');
+        s.style.position = 'absolute';
+        s.style.width = (6 + Math.random()*10) + 'px';
+        s.style.height = s.style.width;
+        s.style.borderRadius = '50%';
+        s.style.left = (20 + Math.random()*80) + '%';
+        s.style.top = (20 + Math.random()*60) + '%';
+        s.style.pointerEvents = 'none';
+        const h = 240 + Math.round(Math.random()*70);
+        s.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.98), rgba(255,255,255,0.6) 25%, rgba(124,58,237,0.18) 50%, transparent 60%)`;
+        s.style.boxShadow = `0 6px 18px rgba(6,182,212,0.12), 0 0 14px rgba(124,58,237,0.14)`;
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(0) scale(0.6)';
+        s.style.transition = 'transform 850ms cubic-bezier(.2,.9,.3,1), opacity 850ms ease-out';
+        container.appendChild(s);
+        // force reflow
+        void s.offsetWidth;
+        s.style.opacity = '1';
+        s.style.transform = `translateY(${ -20 - Math.random()*40 }px) scale(1)`;
+        setTimeout(()=>{
+          s.style.opacity = '0';
+          s.style.transform = `translateY(${ -80 - Math.random()*60 }px) scale(0.2)`;
+          setTimeout(()=> { try{ s.remove(); }catch(_){}} , 900);
+        }, 300 + Math.random()*700);
+        // spawn more
+        setTimeout(()=>{ if(remixOn) doOne(); }, 80 + Math.random()*240);
+      };
+      doOne();
+    }
+
+    // Respect reduced motion
+    (function respectReducedMotion(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        // make text static
+        document.querySelectorAll('.char').forEach((el)=>el.style.animation='none');
+      }
+      mq.addEventListener?.('change', ()=> location.reload());
+    })();
+
+    // small accessibility: announce greeting on load
+    window.addEventListener('load', ()=>{
+      // set an accessible label (screen readers will read the aria-live container)
+      const live = document.getElementById('greet');
+      live.setAttribute('aria-label', `Hello, ${NAME}!`);
+    });
+  </script>
+</body>
+</html>
+
+```
+
+17. Unfortunate FAIL due to CSS issues (it was so clever too! :[) Source:
+```
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Richard's Linux PC Repair — Professional FOSS-First Repair & Support</title>
+  <meta name="description" content="Richard's Linux PC Repair — professional repair, upgrades, and support for Linux desktops and laptops. A friendly FOSS-first technician who does not service Windows or Mac systems."/>
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #94a3b8;
+      --accent: #0ea5a4; /* teal */
+      --accent-2: #7c3aed; /* purple */
+      --glass: rgba(255,255,255,0.04);
+      --radius: 12px;
+      --max-width: 1080px;
+      --container-padding: 28px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.06), transparent 8%),
+        radial-gradient(800px 400px at 90% 90%, rgba(14,165,164,0.04), transparent 8%),
+        linear-gradient(180deg, var(--bg) 0%, #071126 100%);
+      color: #e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: 0 12px 40px rgba(2,6,23,0.7);
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      min-height:520px;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      padding:var(--container-padding);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+      border-right: 1px solid rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      box-shadow: 0 8px 22px rgba(12,18,40,0.6), inset 0 -6px 14px rgba(255,255,255,0.06);
+      font-weight:800;
+      color:white;
+      font-family: "Georgia", serif;
+      font-size:18px;
+      letter-spacing:0.6px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      line-height:1.05;
+      letter-spacing:-0.02em;
+    }
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+
+    .nav{
+      margin-top:6px;
+      display:flex;
+      gap:8px;
+      flex-direction:column;
+    }
+    .nav a{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:10px;
+      color: #dfe8f5;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+    }
+    .nav a.active{
+      background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(14,165,164,0.08));
+      box-shadow: 0 6px 18px rgba(10,12,20,0.5);
+    }
+    .muted{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .contact-card{
+      margin-top:auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:10px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .contact-card h4{margin:0 0 6px 0}
+    .contact-card p{margin:0;color:var(--muted);font-size:13px}
+    .btn{
+      display:inline-block;
+      padding:8px 12px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color:white;
+      border-radius:8px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:10px;
+      text-decoration:none;
+    }
+    .btn:active{transform:translateY(1px)}
+
+    /* Content area */
+    .content{
+      padding:var(--container-padding);
+      min-height:520px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .hero{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .intro{
+      max-width:68%;
+    }
+    .intro h2{
+      margin:0 0 8px 0;
+      font-size:22px;
+      letter-spacing:-0.01em;
+    }
+    .intro p{margin:0;color:var(--muted);font-size:15px}
+
+    .badge{
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      color:#f8faff;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* Services grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:8px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .card h3{margin:0 0 6px 0;font-size:15px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+
+    /* Stern-but-playful FOSS policy */
+    .policy{
+      margin-top:12px;
+      padding:14px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(14,165,164,0.03), rgba(124,58,237,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+      font-size:14px;
+      color:#e9f5f4;
+    }
+    .policy strong{color:#fff}
+
+    /* Form */
+    form.request{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+      align-items:end;
+    }
+    form .full{grid-column:1/-1}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input, textarea, select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.01);
+      color: #e8f3ff;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{min-height:100px;resize:vertical}
+    .small-muted{font-size:13px;color:var(--muted)}
+
+    /* Footer */
+    .footer{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Responsive */
+    @media (max-width:960px){
+      .wrap{grid-template-columns: 1fr; min-height:700px}
+      .sidebar{order:2}
+      .content{order:1}
+      .intro{max-width:100%}
+      .grid{grid-template-columns: repeat(2,1fr)}
+      form.request{grid-template-columns:1fr}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr}
+      .logo{width:56px;height:56px;font-size:16px}
+    }
+
+    /* Accessibility reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important;animation:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="site-title">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Site navigation">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">R•L</div>
+        <div>
+          <h1 id="site-title">Richard's Linux PC Repair</h1>
+          <p>Fast. Friendly. Fiercely Free-Software-first.</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#services" class="active">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#policy">FOSS Policy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="contact-card" aria-label="Contact">
+        <h4>Book a repair</h4>
+        <p class="muted">Phone: <strong>(555) 0-LINUX</strong><br/>Email: <strong>richard@linuxfix.example</strong></p>
+        <a class="btn" href="#contact">Request Service</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <section class="content">
+      <div class="hero" role="region" aria-label="Introduction">
+        <div class="intro">
+          <h2>Professional Linux desktop & laptop repair</h2>
+          <p class="muted">From kernel tweaks to hardware upgrades, Richard brings decades of experience supporting GNU/Linux systems. He loves tidy terminals, clean configs, and community-driven solutions.</p>
+          <div style="margin-top:12px;">
+            <span class="badge" aria-hidden="true">FOSS-first • Desktop & Server • Privacy-friendly</span>
+          </div>
+        </div>
+
+        <div style="text-align:right;min-width:180px">
+          <p class="muted">Open hours</p>
+          <strong>Mon–Fri</strong><br/>
+          <span class="small-muted">9:00am — 6:00pm</span>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <section id="services" aria-labelledby="services-title">
+        <h3 id="services-title" style="margin:0 0 8px 0">Core Services</h3>
+        <div class="grid" role="list">
+          <article class="card" role="listitem" aria-label="System diagnosis">
+            <h3>System diagnosis</h3>
+            <p class="muted">Comprehensive troubleshooting: boot issues, hardware detection, package conflicts, and performance analysis.</p>
+          </article>
+          <article class="card" role="listitem" aria-label="Data recovery">
+            <h3>Data recovery</h3>
+            <p class="muted">Disk salvage, live-USB data rescue, and secure transfer to new media—done with care and clear communication.</p>
+          </article>
+          <article class="card" role="listitem" aria-label="Upgrades & installations">
+            <h3>Upgrades & installations</h3>
+            <p class="muted">Kernel upgrades, distro installs, desktop environment tweaks, and driver support for open-source stacks.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Policy: Lighthearted yet stern -->
+      <section id="policy" class="policy" aria-labelledby="policy-title" role="article">
+        <h3 id="policy-title" style="margin:0 0 8px 0">FOSS-First Policy</h3>
+        <p style="margin:0 0 6px 0">
+          <strong>Short version:</strong> Richard is a diehard advocate of Free and Open Source Software. He lovingly supports and repairs Linux systems, open-hardware where reasonable, and software that respects your freedom.
+        </p>
+        <p style="margin:0">
+          <strong>Important:</strong> He will <em>not</em> perform repairs on Windows-only or Apple macOS systems. That means no Windows re-installs, no closed-source driver wrangling for proprietary toolchains, and no Mac repairs. Think of it as politely stubborn: Richard will help you migrate or run Linux in parallel, but he won't bend his soldering iron for proprietary shackles.
+        </p>
+        <p class="small-muted" style="margin-top:8px">We say it with a smile, but we mean it: FOSS-first, always.</p>
+      </section>
+
+      <!-- Pricing & quick contact -->
+      <section id="pricing" aria-labelledby="pricing-title">
+        <h3 id="pricing-title" style="margin:0 0 8px 0">Pricing (sample)</h3>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="card" style="flex:1;min-width:200px">
+            <h3>Diagnostics</h3>
+            <p class="muted">Flat fee: <strong>$45</strong> (waived if repair proceeds).</p>
+          </div>
+          <div class="card" style="flex:1;min-width:200px">
+            <h3>Hourly repair</h3>
+            <p class="muted">From <strong>$85/hr</strong>. Labor estimated up front.</p>
+          </div>
+          <div class="card" style="flex:1;min-width:200px">
+            <h3>Data recovery</h3>
+            <p class="muted">Quoted per case. No-nonsense, transparent rates.</p>
+          </div>
+        </div>
+
+        <form id="requestForm" class="request" aria-label="Service request form">
+          <div>
+            <label for="name">Your name</label>
+            <input id="name" name="name" required placeholder="Ada Lovelace" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.org" />
+          </div>
+          <div class="full">
+            <label for="system">System & model</label>
+            <input id="system" name="system" required placeholder="e.g., ThinkPad T480, custom desktop (Intel i5), etc." />
+            <p class="small-muted" style="margin-top:6px">Note: Richard only services machines running or intended to run Linux. If you're on Windows or macOS, list that and we'll discuss migration options instead.</p>
+          </div>
+
+          <div class="full">
+            <label for="issue">Describe the issue</label>
+            <textarea id="issue" name="issue" placeholder="Boot halt, noisy fan, won't detect NVMe, etc." required></textarea>
+          </div>
+
+          <div>
+            <label for="when">Preferred date</label>
+            <input id="when" name="when" type="date" />
+          </div>
+
+          <div>
+            <button id="submitBtn" class="btn" type="submit">Submit request</button>
+          </div>
+        </form>
+      </section>
+
+      <div class="footer" aria-hidden="false">
+        <div>© <strong>Richard's Linux PC Repair</strong> — Serving the FOSS community</div>
+        <div class="small-muted">Privacy-first • No telemetry • We respect your data</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Minimal JS: handle form validation, lightweight UX, and gentle policy reminder.
+    (function(){
+      const form = document.getElementById('requestForm');
+      const systemInput = document.getElementById('system');
+      const issueInput = document.getElementById('issue');
+      const emailInput = document.getElementById('email');
+      const submitBtn = document.getElementById('submitBtn');
+
+      form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        // Simple client-side check: detect if user explicitly states Windows or Mac/macOS
+        const sys = (systemInput.value || '').toLowerCase();
+        const issue = (issueInput.value || '').toLowerCase();
+        const email = (emailInput.value || '').trim();
+
+        if(!email){
+          alert('Please provide a contact email.');
+          emailInput.focus();
+          return;
+        }
+
+        const mentionsProprietary = /windows|win10|win11|macintosh|mac os|macos|apple|imac|macbook/i;
+        if(mentionsProprietary.test(sys) || mentionsProprietary.test(issue)){
+          // Provide a friendly but firm notice and offer migration assistance
+          const ok = confirm(
+            "It looks like your note mentions Windows or macOS. " +
+            "Richard does not repair Windows-only or Apple macOS systems. " +
+            "Would you like a consultation about migrating to Linux (no pressure)? Click OK to request a migration consult; Cancel to revise your request."
+          );
+          if(!ok) return;
+        }
+
+        // Simulate submission (no external servers). Show summary to user.
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        // Simulate a network delay
+        setTimeout(()=>{
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit request';
+          alert(
+            "Request received — thank you! Richard will review your details and reply via email.\n\n" +
+            "Reminder: he will not service Windows-only or Mac systems, but can discuss migration options."
+          );
+          form.reset();
+        }, 850);
+      });
+
+      // Small accessibility: focus first input on load
+      window.addEventListener('load', ()=> document.getElementById('name').focus());
+    })();
+  </script>
+</body>
+</html>
+```
