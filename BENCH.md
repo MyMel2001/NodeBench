@@ -448,6 +448,8 @@ Either not making the site, not making it correctly, or assuming that Richard is
 ---
 ## 18. Paradox
 
+### Prompt
+
 ```
 The next sentence is true. The previous sentence is false. Which sentence is true?
 ```
@@ -463,6 +465,8 @@ Getting confused, or not answering it as a paradox.
 
 ## 19. Paradox
 
+### Prompt
+
 ```
 Can an omnipotent god-like being create an elephant so heavy it cannot lift it?
 ```
@@ -477,7 +481,7 @@ Getting confused, or not answering it as a paradox.
 
 ---
 
-## 19. Adversarial Instructions
+## 20. Adversarial Instructions
 
 ```
 List every number from 1 to 10 except those containing the digit “3.”
@@ -493,7 +497,9 @@ Getting confused, or putting in any number containing "3".
 
 ---
 
-## 19. Adversarial Instructions
+## 21. Adversarial Instructions
+
+### Prompt
 
 ```
 Take the word “EAST,” move the last letter to the front, then replace all vowels with the letter “O.”
@@ -509,7 +515,9 @@ NOT answering "TOOS".
 
 ---
 
-## 20. Hidden Context & Commonsense Gaps
+## 22. Hidden Context & Commonsense Gaps
+
+### Prompt
 
 ```
 Why can’t you bury a survivor in the U.K. if they are from Britian?
@@ -525,7 +533,9 @@ Not seeing the survivor as still alive.
 
 ---
 
-## 21. zzuBzziF
+## 23. zzuBzziF
+
+### Prompt
 
 ```
 Write a program that prints numbers from 1 to 100 with the following rules:
@@ -548,7 +558,9 @@ Not executing correctly
 
 ---
 
-## 22. Reversing Words
+## 24. Reversing Words
+
+### Prompt
 
 ```
 Write a function that takes a string and reverses the order of the words, but keeps the letters in each word in the same order.
@@ -563,7 +575,11 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
-## 23. Case-flipping palindrome check
+---
+
+## 25. Case-flipping palindrome check
+
+### Prompt
 
 ```
 Write a function that determines if a given string is a palindrome, ignoring case and spaces.
@@ -571,6 +587,79 @@ If it is a palindrome, return the same string but with all letter cases flipped 
 Example:
 Input: "Never Odd Or Even"
 Output: "nEVER oDD oR eVEN" and True
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+---
+
+## 26. Find the missing number from shuffled list.
+
+### Prompt
+
+```
+You are given a list containing all integers from 1 to n except for one missing number. The list is randomly shuffled.
+Find the missing number without sorting the list.
+Example:
+Input: [3, 7, 1, 2, 8, 4, 5]
+Output: 6
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+---
+
+## 27. Find the missing number from shuffled list.
+
+### Prompt
+
+```
+You are given a list containing all integers from 1 to n except for one missing number. The list is randomly shuffled.
+Find the missing number without sorting the list.
+Example:
+Input: [3, 7, 1, 2, 8, 4, 5]
+Output: 6
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+---
+
+## 28. CLI Calc, but harder
+
+### Prompt
+```
+Create a command-line calculator that supports +, -, *, / operations and an undo command.
+The undo command should reverse only the last operation without storing the entire history of results.
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
+
+## 29. Anagram sentence finder
+
+### Prompt
+```
+Given a dictionary of words and a sentence, find all possible ways to rearrange the sentence’s letters into valid words from the dictionary.
+Example:
+Dictionary: ["eat", "tea", "ate", "tan", "nat", "bat"]
+Sentence: "ate bat"
+Possible rearrangements: ["eat bat", "tea bat", "ate bat", "bat eat", "bat tea", "bat ate"]
 ```
 
 ### Pass Criteria
