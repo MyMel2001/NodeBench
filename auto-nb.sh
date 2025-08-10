@@ -197,8 +197,12 @@ bench 29 'Make a Pinball game in PyGame, similar to the one that came with Windo
 
 No external assets or libraries besides the ones specified.'
 
-bench 29 'Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
+bench 30 'Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
 and shoot monsters.
+
+No external assets or libraries besides the ones specified.'
+
+bench 31 'Create a simple ray and path tracer using basic HTML/CSS/JS.
 
 No external assets or libraries besides the ones specified.'
 
