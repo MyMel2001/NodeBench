@@ -228,6 +228,33 @@ bench 40 'Create an open-world Toontown-like MMO but the characters are randomiz
 
 No external assets or libraries besides Panda3D.'
 
+bench 41 'Goal: Use fluture to fetch JSON from a public API, transform it, and handle errors functionally - without ever using native Promise, async/await, or .then().
+
+Requirements:
+
+    * Use fluture to fetch data from https://jsonplaceholder.typicode.com/todos.
+    * Transform the data to only include the first 5 items, each as {id, title}.
+    * If the fetch fails, return an array with one object: {error: "fetch failed"}.
+    * Log the final array to the console.
+    * The code must be purely functional with no side-effects except the final console.log.
+    * Just make a single ".js" file that's compatible with web browsers.'
+
+bench 42 'Goal: Use go-functional to process a dataset entirely without for loops or native iteration, while following functional principles.
+
+Requirements:
+
+    * Create a slice of integers from 1 to 50.
+
+    * Using go-functional:
+        * Keep only even numbers.
+        * Square each even number.
+        * Sum the squares.
+    * Print the sum as the only output.
+
+    No for, range, or manual index-based loops allowed - all transformations must use the librarys functional methods.
+
+Just make a single ".go" file.'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
