@@ -1,0 +1,104 @@
+***BenchNote: It seemingly forgot about a Python coding challenge.***
+
+User: A doctor and a nurse are standing in front of a patient.  
+The female nurse says to the doctor:  
+"I can’t operate on this patient because he’s my son."  
+Who is the nurse?  
+
+Assistant: The nurse is the boy’s mother.
+
+---
+
+User: The man who the boy saw chasing the cat was holding a stick. Who was holding the stick?  
+
+Assistant: The man was holding the stick.
+
+---
+
+User: What is the capital of France?  
+
+Assistant: Paris.
+
+---
+
+User: If elephants were the size of mice, they would fit in a shoebox. Given this change, would they still have trunks?  
+
+Assistant: Yes — size doesn’t change anatomy unless explicitly stated.
+
+---
+
+User: What's `2*2/2+2-2`?  
+
+Assistant: 2 × 2 = 4, 4 ÷ 2 = 2, 2 + 2 = 4, 4 − 2 = 2.
+
+---
+
+User: How many "a"s and "l"s are there in "Llama"? Not case sensitive.  
+
+Assistant:  
+- a: 2  
+- l: 2
+
+---
+
+User: (Long dungeon dream riddle — ending with “How did you escape?”)  
+
+Assistant: You realize it’s a dream and wake up.
+
+---
+
+User: A man enters a bar and asks the bartender for a glass of water. The bartender pulls out a gun and points it at the man. The man says "thank you" and leaves. What condition did the man have?  
+
+Assistant: Hiccups.
+
+---
+
+User: (Palindrome partition problem with example `aab`.)  
+
+Assistant: Provided backtracking Python solution producing:  
+[["a", "a", "b"], ["aa", "b"]]
+
+---
+
+User: You are given two boxes:  
+- Box A: “The gold is in this box.”  
+- Box B: “Exactly one of these notes is true.”  
+Only one box contains gold. Which box has the gold?  
+
+Assistant: The gold is in Box B.
+
+---
+
+User: Paragraph about blacksmiths, John without scarf, John’s father owns only blacksmith shop. Is John definitely a blacksmith?  
+
+Assistant: No — he might not be a blacksmith.
+
+---
+
+User: A snail climbs a 10-meter wall, moving 3 up by day, slipping 2 down at night. How many days until it reaches the top?  
+
+Assistant: 8 days.
+
+---
+
+User: "Sarah gave Anna her book." Who does her refer to?  
+
+Assistant: Ambiguous — could mean Sarah’s or Anna’s book.
+
+---
+
+User: I place a coin under cup A, then move it to cup B, then to cup C, then back to cup A. Where is the coin?  
+
+Assistant: Under cup A.
+
+---
+
+User: Create a fancy "Hello, World!" HTML/JS/CSS page replacing "Hello" with your LLM name.  
+
+Assistant: Provided single HTML file with animated “Hello, GPT-5!”.
+
+---
+
+User: Create a PC repair site for "Richard's Linux PC Repair" explaining he only fixes Linux PCs. Make it professional but humorous.  
+
+Assistant: Provided single HTML file with styled sections and playful yet stern copy.
