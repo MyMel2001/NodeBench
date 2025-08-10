@@ -679,3 +679,18 @@ Runs as intented
 
 ### Fail conditions
 Not executing correctly
+
+## 31. JS Ray/Path tracing.
+
+### Prompt
+```
+Create a simple ray and path tracer using basic HTML/CSS/JS.
+
+No external assets or libraries besides the ones specified.
+```
+
+### Pass Criteria
+Runs as intented
+
+### Fail conditions
+Not executing correctly
