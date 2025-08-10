@@ -3015,3 +3015,68 @@ if __name__ == '__main__':
 This is intentionally a compact example to be easy to extend: you can add better models, polish the network protocol, add reliable UDP, prediction, smoothing, player identity / login, and fancy UI. If you'd like, I can: add cosmetics, make character randomization choices visible in a spawn menu, improve interpolation, or convert to UDP for lower latency.
 
 """
+41. FAIL (Uncaught SyntaxError: import declarations may only appear at top level of a module), SRC:
+```
+// fluture-fetch-example.js
+// Requires fluture from a CDN for browser compatibility
+import {chain, map, mapRej, fork, node, attempt} from 'https://cdn.skypack.dev/fluture';
+import {compose, take, map as mapArr, prop} from 'https://cdn.skypack.dev/ramda';
+
+// Create a Future from fetch using Fluture's "node" for callback-style functions
+const fetchFuture = url =>
+  node(done => {
+    fetch(url)
+      .then(res => res.json())
+      .then(json => done(null, json))
+      .catch(err => done(err, null));
+  });
+
+// Transform: keep first 5 items, map to {id, title}
+const transformTodos = compose(
+  take(5),
+  mapArr(todo => ({ id: todo.id, title: todo.title }))
+);
+
+// Failure handler: always return [{error: "fetch failed"}]
+const onError = () => [{ error: 'fetch failed' }];
+
+// Main Future pipeline
+const program =
+  map(transformTodos)(
+    mapRej(onError)(
+      fetchFuture('https://jsonplaceholder.typicode.com/todos')
+    )
+  );
+
+// Fork to perform the side-effect only at the end
+fork(
+  result => console.log(result), // Left branch is actually the resolved array because of mapRej
+  result => console.log(result)
+)(program);
+
+```
+42. FAIL (./main.go:12:5: it.NaturalNumbers[int]().Take undefined (type iter.Seq[int] has no field or method Take)
+./main.go:17:22: undefined: slices.Reduce), SRC:
+```
+package main
+
+import (
+  "fmt"
+
+  "github.com/BooleanCat/go-functional/v2/it"
+  "golang.org/x/exp/slices"
+)
+
+func main() {
+  sum := it.NaturalNumbers[int]().
+    Take(50).
+    Filter(func(n int) bool { return n%2 == 0 }).
+    Map(func(n int) int { return n * n }).
+    Collect()
+  
+  fmt.Println(slices.Reduce(sum, 0, func(acc, v int) int {
+    return acc + v
+  }))
+}
+
+```
