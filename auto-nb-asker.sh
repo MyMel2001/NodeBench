@@ -218,6 +218,8 @@ bench 36 'A cyclic quadrilateral ABCD has side lengths AB = 13, BC = 14, CD = 15
 
 bench 37 'Is the kernel "Linux" or "GNU/Linux"?'
 
+bench 38 'Create a decently long sentence, then give me a word count for that sentence times two.'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
