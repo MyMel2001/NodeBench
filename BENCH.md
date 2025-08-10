@@ -443,4 +443,4 @@ A professional repair site, explaining in a lighthearted yet stern way that Rich
 
 ### Fail conditions
 
-Either not making the site or assuming that Richard is related to "Richard Stallman" in it's code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
+Either not making the site, not making it correctly, or assuming that Richard is related to "Richard Stallman" in it's code or answer. It can ask a follow up question or think about Stallman though. The site must look professional.
