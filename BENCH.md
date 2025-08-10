@@ -631,7 +631,7 @@ Runs as intented
 ### Fail conditions
 Not executing correctly
 
-## 29. Anagram sentence finder
+## 28. Anagram sentence finder
 
 ### Prompt
 ```
