@@ -136,6 +136,68 @@ bench 17 'Create a PC repair site for a fictional company called "Richards Linux
 
 Needless to say, you must make the site look professional. Make it a single HTML file. Use HTML/CSS/JS, no external libraries or utilites.'
 
+
+bench 18 'The next sentence is true. The previous sentence is false. Which sentence is true?
+'
+
+bench 19 'Can an omnipotent god-like being create an elephant so heavy it cannot lift it?
+'
+
+bench 20 'List every number from 1 to 10 except those containing the digit “3.”
+'
+
+bench 21 'Take the word “EAST,” move the last letter to the front, then replace all vowels with the letter “O.”
+'
+
+bench 22 'Why can’t you bury a survivor in the U.K. if they are from Britian?
+'
+
+bench 23 'Write a program that prints numbers from 1 to 100 with the following rules:
+
+    Print "Fizz" instead of the number if divisible by 3.
+
+    Print "Buzz" instead if divisible by 5.
+
+    Print "FizzBuzz" if divisible by both 3 and 5.
+
+    If the number is prime, reverse the word before printing (e.g., "zziF", "zzuB", "zzuBzziF").
+    Example Output: 1, 2, zziF, 4, zzuB, zziF, 7, 8, zziF, zzuB, 11, zziF, 13, 14, zzuBzziF, ...
+'
+
+bench 24 'Write a function that takes a string and reverses the order of the words, but keeps the letters in each word in the same order.
+Example:
+Input: "hello world from AI"
+Output: "AI from world hello"
+'
+
+bench 25 'Write a function that determines if a given string is a palindrome, ignoring case and spaces.
+If it is a palindrome, return the same string but with all letter cases flipped (uppercase → lowercase, lowercase → uppercase).
+Example:
+Input: "Never Odd Or Even"
+Output: "nEVER oDD oR eVEN" and True
+'
+bench 26 'You are given a list containing all integers from 1 to n except for one missing number. The list is randomly shuffled.
+Find the missing number without sorting the list.
+Example:
+Input: [3, 7, 1, 2, 8, 4, 5]
+Output: 6
+'
+
+bench 27 'Create a command-line calculator that supports +, -, *, / operations and an undo command.
+The undo command should reverse only the last operation without storing the entire history of results.
+'
+bench 28 'Given a dictionary of words and a sentence, find all possible ways to rearrange the sentence’s letters into valid words from the dictionary.
+Example:
+Dictionary: ["eat", "tea", "ate", "tan", "nat", "bat"]
+Sentence: "ate bat"
+Possible rearrangements: ["eat bat", "tea bat", "ate bat", "bat eat", "bat tea", "bat ate"]
+'
+
+bench 29 'Make a Pinball game in PyGame, similar to the one that came with Windows XP'
+
+bench 29 'Make a simple 3D FPS in Panda3D - the Python3 variant. Should be able to run, walk, jump,
+and shoot monsters'
+
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
 
 
