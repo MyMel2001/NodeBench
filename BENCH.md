@@ -1,6 +1,6 @@
 # 🧠 NodeBench - a pass-fail benchmark suite by MyMel2001
 
-***One-shot only, no skips.***
+***One-shot only, no skips, no hints, don't tell the AI you're benchmarking it.***
 
 ## 1. Ambiguous Instruction Resolution
 
