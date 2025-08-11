@@ -8,7 +8,7 @@ fi
 
 model="$1"
 out="ollama-benchmarker.txt.back"
-out_final="ollama-benchmarker-$(echo $model | sed 's/[^A-Za-z0-9._-]/./g')"
+out_final="ollama-benchmarker-$RANDOM"
 
 echo "# Ollama Auto-NodeBench: $model" > "$out"
 
