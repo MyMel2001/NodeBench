@@ -236,7 +236,7 @@ Requirements:
     * If the fetch fails, return an array with one object: {error: "fetch failed"}.
     * Log the final array to the console.
     * The code must be purely functional with no side-effects except the final console.log.
-    * Just make a single ".js" file that's compatible with web browsers.'
+    * Just make a single ".js" file thats compatible with web browsers.'
 
 bench 42 'Goal: Use go-functional to process a dataset entirely without for loops or native iteration, while following functional principles.
 
