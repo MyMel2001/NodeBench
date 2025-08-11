@@ -8,11 +8,10 @@ fi
 
 model="$1"
 out="ollama-benchmarker.txt.back"
-out_final="ollama-benchmarker-$RANDOM"
+out_final="ollama-benchmarker-$(echo "$model" | sed 's/[^A-Za-z0-9._-]/./g')"
 
 echo "# Ollama Auto-NodeBench: $model" > "$out"
 
-# Helper function to append prompt + run model + timing
 bench() {
     local num="$1"
     local prompt="$2"
@@ -256,7 +255,6 @@ Requirements:
 Just make a single ".go" file.'
 
 perl -pe 's/\x1b\[[0-9;?]*[A-Za-z]//g' "$out" > "$out_final"
-
 
 echo "Done - output written to $out_final"
 rm "$out"
