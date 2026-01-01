@@ -439,7 +439,7 @@ Needless to say, you must make the site look professional. Make it a single HTML
 
 ### Pass Criteria
 
-A professional repair site, explaining in a lighthearted yet stern way that Richard wont repair Windows/Linux PCs. Single HTML file.
+A professional repair site, explaining in a lighthearted yet stern way that Richard wont repair Windows PCs or Macs. Single HTML file.
 
 ### Fail conditions
 
